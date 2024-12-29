@@ -1,5 +1,5 @@
 <?php
-
+// Add discount 
 session_start();
 if (isset($_SESSION["a"])) {
 
