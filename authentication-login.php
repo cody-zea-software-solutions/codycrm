@@ -4,9 +4,9 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>Boozebites New Zealand || Admin-Panel</title>
-  <link rel="shortcut icon" href="../assets/images/logos/favicon.png" type="image/x-icon">
-  <link rel="stylesheet" href="../admin-panel/assets-admin/css/styles.min.css" />
+  <title>CODY ZEA || Admin Sign In</title>
+  <link rel="shortcut icon" href="assets-admin/images/logos/logo.webp" type="image/x-icon">
+  <link rel="stylesheet" href="assets-admin/css/styles.min.css" />
 </head>
 
 <body style="background-color: #FBD1A9;">
@@ -23,7 +23,7 @@
                 <a href="./index.html" class="text-nowrap logo-img text-center d-block py-3 w-100">
                   <img src="../assets/images/logos/logo-black.png" width="180" alt="">
                 </a>
-                <h1 class="text-center">Booze Bites</h1>
+                <h1 class="text-center">CODY ZEA</h1>
                 <form>
                   <div class="mb-3">
                     <label for="u" class="form-label">Username</label>
@@ -43,11 +43,8 @@
       </div>
     </div>
   </div>
-  <script src="../script.js"></script>
   <script src="assets-admin\js\script.js"></script>
   
-  <script src="../assets/libs/jquery/dist/jquery.min.js"></script>
-  <script src="../assets/libs/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
 </body>
 
 </html>
