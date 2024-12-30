@@ -11,7 +11,7 @@ if (isset($_SESSION["a"])) {
     if ($u_detail->num_rows == 1) {
         session_abort();
         $u_details = $u_detail->fetch_assoc();
-        ?>
+?>
 
         <!doctype html>
         <html lang="en">
@@ -36,8 +36,7 @@ if (isset($_SESSION["a"])) {
 
         <body>
             <!--  Body Wrapper -->
-            <div class="page-wrapper" id="main-wrapper" data-layout="vertical" data-navbarbg="skin6" data-sidebartype="full"
-                data-sidebar-position="fixed" data-header-position="fixed">
+            <div class="page-wrapper" id="main-wrapper" data-layout="vertical" data-navbarbg="skin6" data-sidebartype="full" data-sidebar-position="fixed" data-header-position="fixed">
                 <?php
 
                 require "side.php";
@@ -59,18 +58,30 @@ if (isset($_SESSION["a"])) {
                                     </div>
                                     <div class="row">
                                         <div class="col-12 d-flex">
-                                            <div class="col-12 col-md-6 col-lg-4 shadow-sm rounded-5 p-5 text-center mx-3 mt-3">
-                                                <img src="assets-admin/bad.png" class="img-fluid" alt="">
-                                                <span class="mt-5 text-black h4">Booze Bites</span>
-                                                <br />
-                                                <span class="mt-5 text-danger h5">Call Missed</span> <br />
+                                            <?php
+                                            $x = Databases::search("SELECT * FROM `calls` WHERE `prioraty_id`='3'");
+                                            $xnum = $x->num_rows;
 
+                                            for ($i = 0; $i < $xnum; $i++) {
+                                                $xdata = $x->fetch_assoc();
+                                            ?>
+                                                <div class="col-12 col-md-6 col-lg-4 shadow-sm rounded-5 p-5 text-center mx-3 mt-3">
+                                                    <img src="assets-admin/bad.png" class="img-fluid" alt="">
+                                                    <span class="mt-5 text-black h4"><?php echo $xdata["name"]; ?></span>
+                                                    <br />
+                                                    <span class="mt-5 text-danger h5">Call Missed</span> <br />
+                                                    <?php
+                                                    $sy = Databases::search("SELECT * FROM `system_type` WHERE `type_id`='" . $xdata["system_id"] . "'");
+                                                    $syy = $sy->fetch_assoc();
+                                                    ?>
+                                                    <span class="mt-5 text-black h5">System Type: <?php echo $syy["type_name"]; ?></span><br />
+                                                    <button onclick="whynote('<?php echo $xdata['call_code']; ?>');" class="btn btn-danger mt-3"><i class="fa-solid fa-plus"></i>
+                                                        Why Note</button>
+                                                </div>
+                                            <?php
+                                            }
+                                            ?>
 
-                                                <span class="mt-5 text-black h5">System Type: W</span> <br />
-                                                <button class="btn btn-danger mt-3" data-bs-toggle="modal"
-                                                    data-bs-target="#modal"><i class="fa-solid fa-plus"></i>
-                                                    Why Note</button>
-                                            </div>
 
                                         </div>
 
@@ -79,33 +90,29 @@ if (isset($_SESSION["a"])) {
 
 
                                 <!-- user details modal -->
-                                <div class="modal fade" id="modal" tabindex="-1" aria-labelledby="exampleModalLabel"
-                                    aria-hidden="true">
+                                <div class="modal fade" id="modal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
                                     <div class="modal-dialog modal-lg">
                                         <div class="modal-content">
                                             <div class="modal-header">
                                                 <div class="modal-title fs-4 fw-bold" id="exampleModalLabel">&nbsp;
                                                     Why Missed Project/Call</div>
-                                                <button type="button" class="btn-close" data-bs-dismiss="modal"
-                                                    aria-label="Close"></button>
+                                                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                                             </div>
                                             <div class="modal-body pt-4">
                                                 <div class="card mb-0">
                                                     <div class="row pt-3 px-2">
-                                                        <div
-                                                            class="col-4 col-md-2 d-flex justify-content-center align-items-center">
-                                                            <img src="./assets-admin/box.png" class="img-fluid" width="90px"
-                                                                alt="" srcset="">
+                                                        <div class="col-4 col-md-2 d-flex justify-content-center align-items-center">
+                                                            <img src="./assets-admin/box.png" class="img-fluid" width="90px" alt="" srcset="">
                                                         </div>
+                                                        <form method="POST" action="">
+                                                            <input type="text" id="callid" name="callid" placeholder="Enter Call ID" value="<?php echo htmlspecialchars($ccode); ?>">
+                                                            <button type="submit" style="display: none;">Submit</button>
+                                                        </form>
                                                         <div class="col-8 col-md-10">
                                                             <div class="row">
-
                                                                 <div class="col-12 mb-3">
                                                                     <div class="form-floating">
-                                                                        <textarea type="text" class="form-control rounded-0"
-                                                                            rows="4" cols="50" id="floatingInput"
-                                                                            placeholder="System Type"
-                                                                            value="W">you can add call note which means call improvement</textarea>
+                                                                        <textarea type="text" class="form-control rounded-0" rows="4" cols="50" id="floatingInputnote" placeholder="System Type">you can add call note which means call improvement</textarea>
                                                                         <label for="floatingInput">Add a Note</label>
                                                                     </div>
                                                                 </div>
@@ -117,7 +124,7 @@ if (isset($_SESSION["a"])) {
                                             <div class="modal-footer">
                                                 <div class="col-12 mt-3 text-end">
                                                     <button class="btn fw-bold x" data-bs-dismiss="modal">Close</button>
-                                                    <button class="btn btn-success" data-bs-dismiss="modal">Save</button>
+                                                    <button class="btn btn-success" onclick="missnotesave();" data-bs-dismiss="modal">Save</button>
                                                 </div>
                                             </div>
                                         </div>
@@ -146,18 +153,19 @@ if (isset($_SESSION["a"])) {
         <script src="assets-admin/libs/apexcharts/dist/apexcharts.min.js"></script>
         <script src="assets-admin/libs/simplebar/dist/simplebar.js"></script>
         <script src="assets-admin/js/dashboard.js"></script>
+        <script src="sahan.js"></script>
 
         </html>
-        <?php
+    <?php
     } else {
-        ?>
+    ?>
 
         <script>
             alert("You Are Not an Admin");
             window.location = "authentication-login.php";
         </script>
 
-        <?php
+    <?php
     }
 } else {
     ?>
@@ -167,7 +175,7 @@ if (isset($_SESSION["a"])) {
         window.location = "authentication-login.php";
     </script>
 
-    <?php
+<?php
 
 }
 

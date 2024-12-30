@@ -11,7 +11,7 @@ if (isset($_SESSION["a"])) {
     if ($u_detail->num_rows == 1) {
         session_abort();
         $u_details = $u_detail->fetch_assoc();
-        ?>
+?>
 
         <!doctype html>
         <html lang="en">
@@ -36,8 +36,7 @@ if (isset($_SESSION["a"])) {
 
         <body>
             <!--  Body Wrapper -->
-            <div class="page-wrapper" id="main-wrapper" data-layout="vertical" data-navbarbg="skin6" data-sidebartype="full"
-                data-sidebar-position="fixed" data-header-position="fixed">
+            <div class="page-wrapper" id="main-wrapper" data-layout="vertical" data-navbarbg="skin6" data-sidebartype="full" data-sidebar-position="fixed" data-header-position="fixed">
                 <?php
 
                 require "side.php";
@@ -59,19 +58,30 @@ if (isset($_SESSION["a"])) {
                                     </div>
                                     <div class="row">
                                         <div class="col-12 d-flex">
-                                            <div class="col-12 col-md-6 col-lg-4 shadow-sm rounded-5 p-5 text-center mx-3 mt-3">
-                                                <img src="assets-admin/box.png" class="img-fluid" alt="">
-                                                <span class="mt-5 text-black h4">Booze Bites</span>
-                                                <br />
-                                                <span class="mt-5 text-black h5">Date: 12/30/2024</span> <br />
-                                                <span class="mt-5 text-danger h6">Deadline: 12/30/2024</span> <br />
+                                            <?php
+                                            $x = Databases::search("SELECT * FROM `calls` WHERE `prioraty_id`='2'");
+                                            $xnum = $x->num_rows;
 
-                                                <span class="mt-5 text-black h5">System Type: W</span> <br />
-                                                <button class="btn btn-success mt-3" data-bs-toggle="modal"
-                                                    data-bs-target="#modal"><i class="fa-regular fa-eye"></i>
-                                                    Show</button>
-                                            </div>
-
+                                            for ($i = 0; $i < $xnum; $i++) {
+                                                $xdata = $x->fetch_assoc();
+                                            ?>
+                                                <div class="col-12 col-md-6 col-lg-4 shadow-sm rounded-5 p-5 text-center mx-3 mt-3">
+                                                    <img src="assets-admin/box.png" class="img-fluid" alt="">
+                                                    <span class="mt-5 text-black h4"><?php echo $xdata["name"]; ?></span><br />
+                                                    <span class="mt-5 text-black h5">Date: <?php echo $xdata["date_time"]; ?></span><br />
+                                                    <span class="mt-5 text-danger h6">Deadline: 12/30/2024</span><br />
+                                                    <?php
+                                                    $sy = Databases::search("SELECT * FROM `system_type` WHERE `type_id`='" . $xdata["system_id"] . "'");
+                                                    $syy = $sy->fetch_assoc();
+                                                    ?>
+                                                    <span class="mt-5 text-black h5">System Type: <?php echo $syy["type_name"]; ?></span><br />
+                                                    <button onclick="show('<?php echo $xdata['call_code']; ?>')" class="btn btn-success mt-3">
+                                                        <i class="fa-regular fa-eye"></i> Show
+                                                    </button>
+                                                </div>
+                                            <?php
+                                            }
+                                            ?>
                                         </div>
 
                                     </div>
@@ -79,79 +89,75 @@ if (isset($_SESSION["a"])) {
 
 
                                 <!-- user details modal -->
-                                <div class="modal fade" id="modal" tabindex="-1" aria-labelledby="exampleModalLabel"
-                                    aria-hidden="true">
+                                <?php
+                                $ccode = '';
+                                if ($_SERVER['REQUEST_METHOD'] == 'POST') {
+                                    if (isset($_POST['callid']) && !empty($_POST['callid'])) {
+                                        $ccode = $_POST['callid'];
+                                    } else {
+                                        $error_message = "Please enter a Call ID.";
+                                    }
+                                }
+                                ?>
+
+                                <!-- user details modal -->
+                                <div class="modal fade" id="modal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
                                     <div class="modal-dialog modal-lg">
                                         <div class="modal-content">
                                             <div class="modal-header">
-                                                <div class="modal-title fs-4 fw-bold" id="exampleModalLabel"><i
-                                                        class="fa-regular fa-phone"></i>&nbsp;
-                                                    Call Details</div>
-                                                <button type="button" class="btn-close" data-bs-dismiss="modal"
-                                                    aria-label="Close"></button>
+                                                <div class="modal-title fs-4 fw-bold" id="exampleModalLabel">
+                                                    <i class="fa-regular fa-phone"></i>&nbsp; Call Details
+                                                </div>
+                                                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                                             </div>
+                                            <!-- Form for call ID -->
+                                            <form method="POST" action="">
+                                                <input type="text" id="callid" name="callid" placeholder="Enter Call ID" value="<?php echo htmlspecialchars($ccode); ?>">
+                                                <button type="submit" style="display: none;">Submit</button>
+                                            </form>
+
                                             <div class="modal-body pt-4">
                                                 <div class="card mb-0">
                                                     <div class="row pt-3 px-2">
-                                                        <div
-                                                            class="col-4 col-md-2 d-flex justify-content-center align-items-center">
-                                                            <img src="./assets-admin/box.png" class="img-fluid" width="90px"
-                                                                alt="" srcset="">
+                                                        <div class="col-4 col-md-2 d-flex justify-content-center align-items-center">
+                                                            <img src="./assets-admin/box.png" class="img-fluid" width="90px" alt="">
                                                         </div>
                                                         <div class="col-8 col-md-10">
                                                             <div class="row">
                                                                 <div class="col-12 col-md-6 mb-3">
                                                                     <div class="form-floating">
-                                                                        <input type="text" class="form-control rounded-0"
-                                                                            id="floatingInput"
-                                                                            placeholder="title of the product"
-                                                                            value="Booze Bites" readonly>
+                                                                        <input type="text" class="form-control rounded-0" id="floatingInput" readonly>
                                                                         <label for="floatingInput">Project Name</label>
                                                                     </div>
                                                                 </div>
                                                                 <div class="col-12 col-md-6 mb-3">
                                                                     <div class="form-floating">
-                                                                        <input type="text" class="form-control rounded-0"
-                                                                            id="floatingInput"
-                                                                            placeholder="title of the product"
-                                                                            value="12/30/2024" readonly>
-                                                                        <label for="floatingInput">Date</label>
+                                                                        <input type="text" class="form-control rounded-0" id="floatingInputDate" readonly>
+                                                                        <label for="floatingInputDate">Date</label>
                                                                     </div>
                                                                 </div>
                                                                 <div class="col-6 mb-3">
                                                                     <div class="form-floating">
-                                                                        <input type="text" class="form-control rounded-0"
-                                                                            id="floatingInput"
-                                                                            placeholder="Custormer District" value="Colombo"
-                                                                            readonly>
-                                                                        <label for="floatingInput">District</label>
+                                                                        <input type="text" class="form-control rounded-0" id="floatingInputDistrict" readonly>
+                                                                        <label for="floatingInputDistrict">District</label>
                                                                     </div>
                                                                 </div>
                                                                 <div class="col-6 mb-3">
                                                                     <div class="form-floating">
-                                                                        <input type="text" class="form-control rounded-0"
-                                                                            id="floatingInput"
-                                                                            placeholder="System Type" value="W"
-                                                                            readonly>
-                                                                        <label for="floatingInput">System Type</label>
+                                                                        <input type="text" class="form-control rounded-0" id="floatingInputSystem" readonly>
+                                                                        <label for="floatingInputSystem">System Type</label>
                                                                     </div>
                                                                 </div>
                                                                 <div class="col-12 mb-3">
                                                                     <div class="form-floating">
-                                                                        <textarea type="text" class="form-control rounded-0"
-                                                                            id="floatingInput"
-                                                                            placeholder="System Type" value="W"
-                                                                            >Description Here Can Edit</textarea> 
-                                                                        <label for="floatingInput">Description</label>
+                                                                        <textarea class="form-control rounded-0" id="floatingInputDescription"></textarea>
+                                                                        <label for="floatingInputDescription">Description</label>
                                                                     </div>
                                                                 </div>
                                                                 <div class="col-12 mb-3">
                                                                     <div class="form-floating">
-                                                                        <textarea type="text" class="form-control rounded-0"
-                                                                            id="floatingInput"
-                                                                            placeholder="System Type" value="W"
-                                                                            >you can add call note which means call improvement</textarea> 
-                                                                        <label for="floatingInput">Add a Call Note</label>
+                                                                        <textarea class="form-control rounded-0" id="floatingInputNote"></textarea>
+                                                                        <label for="floatingInputNote">Add a Call Note</label>
                                                                     </div>
                                                                 </div>
                                                             </div>
@@ -159,15 +165,23 @@ if (isset($_SESSION["a"])) {
                                                     </div>
                                                 </div>
                                             </div>
+
                                             <div class="modal-footer">
                                                 <div class="col-12 mt-3 text-end">
                                                     <button class="btn fw-bold x" data-bs-dismiss="modal">Close</button>
-                                                    <button class="btn btn-success" data-bs-dismiss="modal">Update</button>
+                                                    <button class="btn btn-success" type="submit" data-bs-dismiss="modal" onclick="Update();">Update</button>
                                                 </div>
                                             </div>
                                         </div>
                                     </div>
                                 </div>
+                                <!-- user details modal end-->
+
+
+
+
+
+
                                 <!-- user details modal end-->
 
 
@@ -191,18 +205,19 @@ if (isset($_SESSION["a"])) {
         <script src="assets-admin/libs/apexcharts/dist/apexcharts.min.js"></script>
         <script src="assets-admin/libs/simplebar/dist/simplebar.js"></script>
         <script src="assets-admin/js/dashboard.js"></script>
+        <script src="sahan.js"></script>
 
         </html>
-        <?php
+    <?php
     } else {
-        ?>
+    ?>
 
         <script>
             alert("You Are Not an Admin");
             window.location = "authentication-login.php";
         </script>
 
-        <?php
+    <?php
     }
 } else {
     ?>
@@ -212,7 +227,7 @@ if (isset($_SESSION["a"])) {
         window.location = "authentication-login.php";
     </script>
 
-    <?php
+<?php
 
 }
 
