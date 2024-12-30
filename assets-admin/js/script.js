@@ -967,6 +967,126 @@ function adminLogin() {
     x.send(form);
 }
 
+function addCalls() {
+
+    // Get input field values
+    var name = document.getElementById("name").value;
+    var mobile = document.getElementById("mobile").value;
+    var priority = document.getElementById("priority").value;
+    var systemType = document.getElementById("s_type").value;
+    var district = document.getElementById("district").value;
+    var budget = document.getElementById("budget").value;
+    var description = document.getElementById("description").value;
+
+    var toastclass = document.getElementById('custom-toast');
+    var toastElement = new bootstrap.Toast(document.getElementById('custom-toast'));
+    toastclass.className="toast align-items-center text-white bg-danger border-0 rounded-0 p-1";
+    var toastInner = document.getElementById("toast_inner");
+
+    // Check if 'name' is empty
+    if (name === "") {
+        toastInner.innerHTML="Enter the client's name.";
+        toastElement.show();
+        document.getElementById("name").focus();
+        return;
+    }
+
+    // Check if 'mobile' is empty
+    if (mobile === "") {
+        toastInner.innerHTML="Enter the client's mobile.";
+        toastElement.show();
+        document.getElementById("mobile").focus();
+        return;
+    }
+
+    // Check if 'priority' is selected
+    if (priority == "0") {
+        toastInner.innerHTML="Enter the project priority.";
+        toastElement.show();
+        document.getElementById("priority").focus();
+        return;
+    }
+
+    // Check if 'systemType' is selected
+    if (systemType == "0") {
+        toastInner.innerHTML="Enter the project type.";
+        toastElement.show();
+        document.getElementById("s_type").focus();
+        return;
+    }
+
+    // Check if 'district' is selected
+    if (district == "0") {
+        toastInner.innerHTML="Enter the client's district.";
+        toastElement.show();
+        document.getElementById("district").focus();
+        return;
+    }
+
+    // Check if 'budget' is empty
+    if (budget === "") {
+        toastInner.innerHTML="Enter the project budget.";
+        toastElement.show();
+        document.getElementById("budget").focus();
+        return;
+    }
+
+    // Check if 'description' is empty
+    if (description === "") {
+        toastInner.innerHTML="Enter the description.";
+        toastElement.show();
+        document.getElementById("description").focus();
+        return;
+    }
+
+    document.getElementById("add_button").innerHTML="<div class='spinner-border' role='status'></div>";
+
+    // If all fields are valid, create the FormData and send the AJAX request
+    var form = new FormData();
+    form.append("name", name);
+    form.append("mobile", mobile);
+    form.append("priority", priority);
+    form.append("systemType", systemType);
+    form.append("district", district);
+    form.append("budget", budget);
+    form.append("description", description);
+
+    // Create XMLHttpRequest
+    var x = new XMLHttpRequest();
+
+    // Define the response handling
+    x.onreadystatechange = function () {
+        if (x.readyState == 4 && x.status == 200) {
+            document.getElementById("add_button").innerHTML="ADD";
+            var response = x.responseText;
+            if (response === "success") {
+                // Show success toast
+                toastclass.className="toast align-items-center text-white bg-success border-0 rounded-0 p-1";
+                toastInner.innerHTML="The call has been added successfully.";
+                toastElement.show();
+                
+                // Optionally, reset the form after success
+                document.getElementById("name").value = "";
+                document.getElementById("mobile").value = "";
+                document.getElementById("priority").value = "0";
+                document.getElementById("s_type").value = "0";
+                document.getElementById("district").value = "0";
+                document.getElementById("budget").value = "";
+                document.getElementById("description").value = "";
+            } else {
+                // Display the error message
+                toastInner.innerHTML=x.responseText;
+                toastElement.show();
+            }
+        }
+    };
+
+    // Send the data to addcallprocess.php
+    x.open("POST", "addcallprocess.php", true);
+    x.send(form);
+}
+
+
 function admin_logout() {
     var r = new XMLHttpRequest();
     r.onreadystatechange = function () {

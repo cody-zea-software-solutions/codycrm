@@ -12,22 +12,27 @@ if (isset($_SESSION["a"])) {
   if ($u_detail->num_rows == 1) {
     session_abort();
 
-    ?>
+?>
     <!doctype html>
     <html lang="en">
 
     <head>
       <meta charset="utf-8">
       <meta name="viewport" content="width=device-width, initial-scale=1">
-      <title>BOOZEBITES New Zealand || Admin-Panel</title>
-      <link rel="shortcut icon" href="../assets/images/logos/favicon.png" type="image/x-icon">
-      <link rel="stylesheet" href="../admin-panel/assets-admin/css/styles.min.css" />
-      <link rel="stylesheet" href="../admin-panel/assets-admin/css/styles.min.css" />
-      <!---Icons-->
+      <title>CODY ZEA || Call management</title>
+      <link rel="shortcut icon" href="assets-admin/images/logos/logo.webp" type="image/x-icon">
+      <link rel="stylesheet" href="assets-admin/css/styles.min.css" />
       <script src="https://kit.fontawesome.com/dfdb94433e.js" crossorigin="anonymous"></script>
 
+      <style>
+        .toast-container {
+          position: fixed;
+          top: 1rem;
+          right: 1rem;
+          z-index: 1050;
+        }
+      </style>
 
-      <!---Icons-->
     </head>
 
     <body>
@@ -49,186 +54,150 @@ if (isset($_SESSION["a"])) {
           <div class="container-fluid">
             <div class="row d-flex justify-content-center">
               <div class="col-12 text-center mb-3">
-                <div class="mb-1"><span class="h4 mb-9 fw-semibold">Add new Product&nbsp;&nbsp;<i class="fa fa-plus-circle"
+                <div class="mb-1"><span class="h4 mb-9 fw-semibold">Call Management&nbsp;&nbsp;<i class="fa fa-archive"
                       aria-hidden="true"></i></span>
                 </div>
-                <div><span class="mb-9 text-dark-emphasis">You can add new product here</span>
+                <div><span class="mb-9 text-dark-emphasis">You can manage clients here</span>
                 </div>
               </div>
-              <div class="col-12 col-lg-9 border shadow">
-                <div class="row m-3">
-                  <div class="col-12 my-3">
-                    <div class="row d-flex justify-content-center">
-                      <div class="col-8 col-md-4 mb-2" style="height: 200px;">
-                        <input type="file" class="d-none" id="img_input_1">
-                        <div class="border-x log-link d-flex justify-content-center align-items-center h-100 outer-div"
-                          onclick="tProductImage(1);"><span class="small" id="img_span_1">First Image</span>
-                          <img src="" class="img-fluid" id="img_div_1">
-                        </div>
-                      </div>
-                      <div class="col-8 col-md-4 mb-2" style="height: 200px;">
-                        <input type="file" class="d-none" id="img_input_2">
-                        <div class="border-x log-link d-flex justify-content-center align-items-center h-100 outer-div"
-                          onclick="tProductImage(2);"><span class="small" id="img_span_2">Second Image</span>
-                          <img src="" class="img-fluid" id="img_div_2">
-                        </div>
-                      </div>
-                      <div class="col-8 col-md-4 mb-2" style="height: 200px;">
-                        <input type="file" class="d-none" id="img_input_3">
-                        <div class="border-x log-link d-flex justify-content-center align-items-center h-100 outer-div"
-                          onclick="tProductImage(3);"><span class="small" id="img_span_3">Third Image</span>
-                          <img src="" class="img-fluid" id="img_div_3">
-                        </div>
-                      </div>
+
+              <div class="col-12 border shadow py-4 px-4">
+
+                <div class="row px-4">
+
+                  <div class="col-12 col-md-6 mt-4 pe-3">
+                    <div class="form-floating">
+                      <input type="text" class="form-control border-dark rounded-0" id="name" placeholder="">
+                      <label for="floatingInput" class="text-dark">NAME</label>
                     </div>
                   </div>
-                  <div class="col-12 mt-3">
+
+                  <div class="col-12 col-md-6 mt-4 ps-3">
                     <div class="form-floating">
-                      <input type="text" class="form-control rounded-0" id="title" placeholder="title of the product">
-                      <label for="title">Product Title</label>
+                      <input type="text" class="form-control border-dark rounded-0" id="mobile" placeholder="">
+                      <label for="floatingInput" class="text-dark">MOBILE</label>
                     </div>
                   </div>
-                  <div class="col-6 mt-3">
+
+                  <div class="col-12 col-md-6 mt-4 pe-3">
                     <div class="form-floating">
-                      <select class="form-select rounded-0" id="category" aria-label="Floating label select example">
-                        <option selected value="0">Select cook type</option>
+                      <select class="form-select rounded-0 text-dark border-dark" id="priority" aria-label="Floating label select example">
+                        <option value="0" Selected>Not Selected</option>
                         <?php
+                        $status_rs = Databases::search("SELECT * FROM `prioraty`");
+                        $status_num = $status_rs->num_rows;
+                        for ($i = 0; $i < $status_num; $i++) {
+                          $status_data = $status_rs->fetch_assoc();
+                        ?>
+                          <option value="<?php echo $status_data["prioraty_id"] ?>">
+                            <?php echo $status_data["prioraty_name"] ?></option>
 
-                        $category_rs = Databases::search("SELECT * FROM `cook_type` ORDER BY `cook_type_name` ASC");
-                        $category_num = $category_rs->num_rows;
-
-                        for ($i = 0; $i < $category_num; $i++) {
-                          $category_data = $category_rs->fetch_assoc();
-                          ?>
-                          <option value="<?php echo $category_data["cook_type_id"] ?>">
-                            <?php echo $category_data["cook_type_name"] ?>
-                          </option>
-                          <?php
+                        <?php
                         }
-
                         ?>
 
-
                       </select>
-                      <label for="floatingSelect">Select your cook type here</label>
+                      <label for="floatingSelect" class="text-dark">Select Priority Level</label>
                     </div>
-
-                    <button class="btn x rounded-0 mt-2 d-grid col-12" data-bs-toggle="modal"
-                      data-bs-target="#exampleModal">Add New Cook Type</button>
-
-                    <!--Add New Category Modal-->
-
-                    <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel"
-                      aria-hidden="true">
-                      <div class="modal-dialog">
-                        <div class="modal-content">
-                          <div class="modal-header">
-                            <h1 class="modal-title fs-5" id="exampleModalLabel"><i class="fa fa-plus-circle"
-                                aria-hidden="true"></i> Add New Cook Type</h1>
-                            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                          </div>
-                          <div class="modal-body">
-                            <div class="col-12">
-                              <div class="form-floating">
-                                <input type="text" class="form-control rounded-0" id="cname"
-                                  placeholder="title of the product">
-                                <label for="cname">CookType Name</label>
-                              </div>
-                            </div>
-
-
-                          </div>
-                          <div class="modal-footer">
-                            <button type="button" class="btn btn-dark" data-bs-dismiss="modal">Close</button>
-                            <button type="button" class="btn x" onclick="AddCategory();"><i class="fa fa-plus-circle"
-                                aria-hidden="true"></i> Add</button>
-                          </div>
-                        </div>
-                      </div>
-                    </div>
-                    <!--Add New Category Modal-->
                   </div>
 
-                  <div class="col-6 mt-3">
+                  <div class="col-12 col-md-6 mt-4 ps-3">
                     <div class="form-floating">
-                      <select class="form-select rounded-0" aria-label="Floating label select example" id="weight">
-                        <option value="0" selected>Select meat type</option>
+                      <select class="form-select rounded-0 text-dark border-dark" id="s_type" aria-label="Floating label select example">
+                        <option value="0" Selected>Not Selected</option>
                         <?php
-
-                        $weight_rs = Databases::search("SELECT * FROM `meat_type` ORDER BY `meat_type_name` ASC");
-                        $weight_num = $weight_rs->num_rows;
-
-                        for ($i = 0; $i < $weight_num; $i++) {
-
-                          $weight_data = $weight_rs->fetch_assoc();
-                          ?>
-                          <option value="<?php echo $weight_data["meat_type_id"] ?>">
-                            <?php echo $weight_data["meat_type_name"] ?>
-                          </option>
-                          <?php
-                        }
-
+                        $system_type_rs = Databases::search("SELECT * FROM `system_type`");
+                        $system_type_num = $system_type_rs->num_rows;
+                        for ($i = 0; $i < $system_type_num; $i++) {
+                          $system_type_data = $system_type_rs->fetch_assoc();
                         ?>
+                          <option value="<?php echo $system_type_data["type_id"] ?>">
+                            <?php echo $system_type_data["type_name"] ?></option>
+
+                        <?php
+                        }
+                        ?>
+
                       </select>
-                      <label for="floatingSelect">Select meat type</label>
+                      <label for="floatingSelect" class="text-dark">Select System Type</label>
                     </div>
+                  </div>
 
-                    <button class="btn x rounded-0 mt-2 d-grid col-12" data-bs-toggle="modal"
-                      data-bs-target="#weightModal">Add New Meat Type</button>
+                  <div class="col-12 col-md-6 mt-4 pe-3">
+                    <div class="form-floating">
+                      <select class="form-select rounded-0 text-dark border-dark" id="district" aria-label="Floating label select example">
+                        <option value="0" Selected>Not Selected</option>
+                        <?php
+                        $district_type_rs = Databases::search("SELECT * FROM `district`");
+                        $district_type_num = $district_type_rs->num_rows;
+                        for ($i = 0; $i < $district_type_num; $i++) {
+                          $district_type_data = $district_type_rs->fetch_assoc();
+                        ?>
+                          <option value="<?php echo $district_type_data["district_id"] ?>">
+                            <?php echo $district_type_data["district_name"] ?></option>
 
-                    <!--Add Weight Modal-->
+                        <?php
+                        }
+                        ?>
 
-                    <div class="modal fade" id="weightModal" tabindex="-1" aria-labelledby="exampleModalLabel"
-                      aria-hidden="true">
-                      <div class="modal-dialog">
-                        <div class="modal-content">
-                          <div class="modal-header">
-                            <h1 class="modal-title fs-5" id="exampleModalLabel"><i class="fa fa-plus-circle"
-                                aria-hidden="true"></i> Add New Meat Type</h1>
-                            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                          </div>
-                          <div class="modal-body">
-                            <div class="col-12">
-                              <div class="form-floating">
-                                <input type="text" class="form-control rounded-0" id="wname"
-                                  placeholder="title of the product">
-                                <label for="wname">Meat Name</label>
-                              </div>
-                            </div>
+                      </select>
+                      <label for="floatingSelect" class="text-dark">Select District</label>
+                    </div>
+                  </div>
 
+                  <div class="col-12 col-md-6 mt-4 ps-3">
+                    <div class="form-floating">
+                      <input type="number" class="form-control border-dark rounded-0" id="budget" placeholder="">
+                      <label for="floatingInput" class="text-dark">BUDGET</label>
+                    </div>
+                  </div>
 
-                          </div>
-                          <div class="modal-footer">
-                            <button type="button" class="btn btn-dark" data-bs-dismiss="modal">Close</button>
-                            <button type="button" class="btn x" onclick="AddMeat();"><i class="fa fa-plus-circle"
-                                aria-hidden="true"></i> Add</button>
-                          </div>
-                        </div>
+                  <div class="col-12 mt-4">
+                    <div class="form-floating">
+                      <textarea class="form-control border-dark rounded-0" id="description" placeholder="" style="height: 100px;"></textarea>
+                      <label for="description" class="text-dark">DESCRIPTION</label>
+                    </div>
+                  </div>
+
+                  <div class="col-12 my-4 text-end">
+                    <button class="btn btn-orange rounded-0 py-3 px-5" onclick="addCalls();" id="add_button">
+                      ADD
+                    </button>
+                  </div>
+
+                  <!-- Toast container -->
+                  <div class="toast-container rounded-0">
+                    <div id="custom-toast" class="toast align-items-center text-white bg-danger border-0 rounded-0 p-1" role="alert" aria-live="assertive" aria-atomic="true">
+                      <div class="d-flex">
+                        <div class="toast-body" id="toast_inner"></div>
+                        <button type="button" class="btn-close btn-close-white me-2 m-auto" data-bs-dismiss="toast" aria-label="Close"></button>
                       </div>
                     </div>
-                    <!--Add Weight Modal-->
                   </div>
 
-                  <div class="col-12 mt-3">
-                    <div class="form-floating">
-                      <textarea class="form-control rounded-0" placeholder="Short Description" id="sd"
-                        style="height: 100px"></textarea>
-                      <label for="sd">Description</label>
+                  <div class="col-12 mb-5">
+                    <div class="row justify-content-center align-items-center">
+                      <div class="col-12 col-md-6">
+                      <img src="assets-admin\call.svg" class="img-fluid">
+                      </div>
                     </div>
                   </div>
 
-
-                  <div class="col-12 text-end mt-4">
-                    <button class="btn rounded-1 fw-bold x col-md-2" onclick="addProduct();"><i class="fa fa-plus-circle"
-                        aria-hidden="true"></i>
-                      ADD</button>
-                  </div>
                 </div>
+
               </div>
+
             </div>
           </div>
         </div>
       </div>
+
+      <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.8/dist/umd/popper.min.js"
+        integrity="sha384-I7E8VVD/ismYTF4hNIPjVp/Zjvgyol6VFvRkX/vR+Vc4jQkC+hVqc2pM8ODewa9r"
+        crossorigin="anonymous"></script>
+      <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.min.js"
+        integrity="sha384-BBtl+eGJRgqQAUMxJ7pMwbEyER4l1g+O15P+16Ep7Q9Q+zqX6gSbd85u4mG4QzX+"
+        crossorigin="anonymous"></script>
 
       <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.8/dist/umd/popper.min.js"
         integrity="sha384-I7E8VVD/ismYTF4hNIPjVp/Zjvgyol6VFvRkX/vR+Vc4jQkC+hVqc2pM8ODewa9r"
@@ -242,13 +211,13 @@ if (isset($_SESSION["a"])) {
       <script src="../assets/js/app.min.js"></script>
       <script src="../admin-panel/assets-admin/js/script.js"></script>
       <script src="../assets/libs/simplebar/dist/simplebar.js"></script>
-      <script src="../admin-panel/assets-admin/libs/jquery/dist/jquery.min.js"></script>
-      <script src="../admin-panel/assets-admin/libs/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
-      <script src="../admin-panel/assets-admin/js/sidebarmenu.js"></script>
-      <script src="../admin-panel/assets-admin/js/app.min.js"></script>
-      <script src="../admin-panel/assets-admin/libs/apexcharts/dist/apexcharts.min.js"></script>
-      <script src="../admin-panel/assets-admin/libs/simplebar/dist/simplebar.js"></script>
-      <script src="../admin-panel/assets-admin/js/dashboard.js"></script>
+      <script src="assets-admin/libs/jquery/dist/jquery.min.js"></script>
+      <script src="assets-admin/libs/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
+      <script src="assets-admin/js/sidebarmenu.js"></script>
+      <script src="assets-admin/js/app.min.js"></script>
+      <script src="assets-admin/libs/apexcharts/dist/apexcharts.min.js"></script>
+      <script src="assets-admin/libs/simplebar/dist/simplebar.js"></script>
+      <script src="assets-admin/js/dashboard.js"></script>
       <!-- Include jQuery library -->
       <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
 
@@ -260,16 +229,16 @@ if (isset($_SESSION["a"])) {
 
     </html>
 
-    <?php
+  <?php
   } else {
-    ?>
+  ?>
 
     <script>
       alert("You Are Not an Admin");
       window.location = "authentication-login.php";
     </script>
 
-    <?php
+  <?php
   }
 } else {
   ?>
@@ -279,7 +248,7 @@ if (isset($_SESSION["a"])) {
     window.location = "authentication-login.php";
   </script>
 
-  <?php
+<?php
 
 }
 
