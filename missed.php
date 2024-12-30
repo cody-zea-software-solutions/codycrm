@@ -1,0 +1,174 @@
+<?php
+session_start();
+if (isset($_SESSION["a"])) {
+
+    include "db.php";
+
+    $uemail = $_SESSION["a"]["username"];
+
+    $u_detail = Databases::search("SELECT * FROM `admin` WHERE `username`='" . $uemail . "'");
+
+    if ($u_detail->num_rows == 1) {
+        session_abort();
+        $u_details = $u_detail->fetch_assoc();
+        ?>
+
+        <!doctype html>
+        <html lang="en">
+
+        <head>
+            <meta charset="utf-8">
+            <meta name="viewport" content="width=device-width, initial-scale=1">
+            <title>CODY ZEA || Admin-Panel</title>
+            <link rel="shortcut icon" href="assets-admin/images/logos/logo.webp" type="image/x-icon">
+
+            <link rel="stylesheet" href="assets-admin/css/styles.min.css" />
+            <link rel="stylesheet" href="https://site-assets.fontawesome.com/releases/v6.5.1/css/all.css">
+
+            <link rel="stylesheet" href="https://site-assets.fontawesome.com/releases/v6.5.1/css/sharp-thin.css">
+
+            <link rel="stylesheet" href="https://site-assets.fontawesome.com/releases/v6.5.1/css/sharp-solid.css">
+
+            <link rel="stylesheet" href="https://site-assets.fontawesome.com/releases/v6.5.1/css/sharp-regular.css">
+
+            <link rel="stylesheet" href="https://site-assets.fontawesome.com/releases/v6.5.1/css/sharp-light.css">
+        </head>
+
+        <body>
+            <!--  Body Wrapper -->
+            <div class="page-wrapper" id="main-wrapper" data-layout="vertical" data-navbarbg="skin6" data-sidebartype="full"
+                data-sidebar-position="fixed" data-header-position="fixed">
+                <?php
+
+                require "side.php";
+
+                ?>
+                <div class="body-wrapper">
+
+                    <?php
+                    require "nav.php";
+                    ?>
+
+                    <div class="container-fluid">
+                        <div class="row">
+                            <h4 class="h2 text-black">Prioraty Level: Missed Calls</h4>
+                            <div class="col-lg-8">
+                                <section>
+                                    <div>
+                                        <span class="h3 text-black">Call Boxes(Projects)</span>
+                                    </div>
+                                    <div class="row">
+                                        <div class="col-12 d-flex">
+                                            <div class="col-12 col-md-6 col-lg-4 shadow-sm rounded-5 p-5 text-center mx-3 mt-3">
+                                                <img src="assets-admin/bad.png" class="img-fluid" alt="">
+                                                <span class="mt-5 text-black h4">Booze Bites</span>
+                                                <br />
+                                                <span class="mt-5 text-danger h5">Call Missed</span> <br />
+
+
+                                                <span class="mt-5 text-black h5">System Type: W</span> <br />
+                                                <button class="btn btn-danger mt-3" data-bs-toggle="modal"
+                                                    data-bs-target="#modal"><i class="fa-solid fa-plus"></i>
+                                                    Why Note</button>
+                                            </div>
+
+                                        </div>
+
+                                    </div>
+                                </section>
+
+
+                                <!-- user details modal -->
+                                <div class="modal fade" id="modal" tabindex="-1" aria-labelledby="exampleModalLabel"
+                                    aria-hidden="true">
+                                    <div class="modal-dialog modal-lg">
+                                        <div class="modal-content">
+                                            <div class="modal-header">
+                                                <div class="modal-title fs-4 fw-bold" id="exampleModalLabel">&nbsp;
+                                                    Why Missed Project/Call</div>
+                                                <button type="button" class="btn-close" data-bs-dismiss="modal"
+                                                    aria-label="Close"></button>
+                                            </div>
+                                            <div class="modal-body pt-4">
+                                                <div class="card mb-0">
+                                                    <div class="row pt-3 px-2">
+                                                        <div
+                                                            class="col-4 col-md-2 d-flex justify-content-center align-items-center">
+                                                            <img src="./assets-admin/box.png" class="img-fluid" width="90px"
+                                                                alt="" srcset="">
+                                                        </div>
+                                                        <div class="col-8 col-md-10">
+                                                            <div class="row">
+
+                                                                <div class="col-12 mb-3">
+                                                                    <div class="form-floating">
+                                                                        <textarea type="text" class="form-control rounded-0"
+                                                                            rows="4" cols="50" id="floatingInput"
+                                                                            placeholder="System Type"
+                                                                            value="W">you can add call note which means call improvement</textarea>
+                                                                        <label for="floatingInput">Add a Note</label>
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="modal-footer">
+                                                <div class="col-12 mt-3 text-end">
+                                                    <button class="btn fw-bold x" data-bs-dismiss="modal">Close</button>
+                                                    <button class="btn btn-success" data-bs-dismiss="modal">Save</button>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <!-- user details modal end-->
+
+
+                            </div>
+                        </div>
+
+                    </div>
+
+
+
+                </div>
+            </div>
+
+        </body>
+
+        <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+        <script src="assets-admin/libs/jquery/dist/jquery.min.js"></script>
+        <script src="assets-admin/libs/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
+        <script src="assets-admin/js/sidebarmenu.js"></script>
+        <script src="assets-admin/js/app.min.js"></script>
+        <script src="assets-admin/libs/apexcharts/dist/apexcharts.min.js"></script>
+        <script src="assets-admin/libs/simplebar/dist/simplebar.js"></script>
+        <script src="assets-admin/js/dashboard.js"></script>
+
+        </html>
+        <?php
+    } else {
+        ?>
+
+        <script>
+            alert("You Are Not an Admin");
+            window.location = "authentication-login.php";
+        </script>
+
+        <?php
+    }
+} else {
+    ?>
+
+    <script>
+        alert("You Are Not an Admin");
+        window.location = "authentication-login.php";
+    </script>
+
+    <?php
+
+}
+
+?>

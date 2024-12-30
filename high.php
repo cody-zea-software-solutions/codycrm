@@ -4,28 +4,34 @@ if (isset($_SESSION["a"])) {
 
     include "db.php";
 
-    $uemail = $_SESSION["a"]["email"];
+    $uemail = $_SESSION["a"]["username"];
 
-    $u_detail = Databases::search("SELECT * FROM `admin` WHERE `email`='" . $uemail . "'");
+    $u_detail = Databases::search("SELECT * FROM `admin` WHERE `username`='" . $uemail . "'");
 
     if ($u_detail->num_rows == 1) {
         session_abort();
-
+        $u_details = $u_detail->fetch_assoc();
         ?>
+
         <!doctype html>
         <html lang="en">
 
         <head>
             <meta charset="utf-8">
             <meta name="viewport" content="width=device-width, initial-scale=1">
-            <title>CEYNAP New Zealand || Admin-Panel</title>
-            <link rel="shortcut icon" href="../assets/images/logos/favicon.png" type="image/x-icon">
+            <title>CODY ZEA || Admin-Panel</title>
+            <link rel="shortcut icon" href="assets-admin/images/logos/logo.webp" type="image/x-icon">
 
-            <link rel="stylesheet" href="../admin-panel/assets-admin/css/styles.min.css" />
-            <!---Icons-->
-            <script src="https://kit.fontawesome.com/dfdb94433e.js" crossorigin="anonymous"></script>
-            <!---Icons-->
-            <script src="https://cdn.ckeditor.com/ckeditor5/41.1.0/classic/ckeditor.js"></script>
+            <link rel="stylesheet" href="assets-admin/css/styles.min.css" />
+            <link rel="stylesheet" href="https://site-assets.fontawesome.com/releases/v6.5.1/css/all.css">
+
+            <link rel="stylesheet" href="https://site-assets.fontawesome.com/releases/v6.5.1/css/sharp-thin.css">
+
+            <link rel="stylesheet" href="https://site-assets.fontawesome.com/releases/v6.5.1/css/sharp-solid.css">
+
+            <link rel="stylesheet" href="https://site-assets.fontawesome.com/releases/v6.5.1/css/sharp-regular.css">
+
+            <link rel="stylesheet" href="https://site-assets.fontawesome.com/releases/v6.5.1/css/sharp-light.css">
         </head>
 
         <body>
@@ -37,265 +43,156 @@ if (isset($_SESSION["a"])) {
                 require "side.php";
 
                 ?>
-                <!--  Main wrapper -->
                 <div class="body-wrapper">
-                    <!--  Header Start -->
+
                     <?php
                     require "nav.php";
                     ?>
-                    <!--  Header End -->
+
                     <div class="container-fluid">
-
-                    <div class="row">
-                    <div class="col-12 text-center mb-3">
-                                <div class="mb-1"><span class="h4 mb-9 fw-semibold">Manage Products&nbsp;&nbsp;<i
-                                            class="fa fa-list" aria-hidden="true"></i></span>
-                                </div>
-                                <div><span class="mb-9 text-dark-emphasis">You can change or remove products here</span>
-                                </div>
-                            </div>
-                    </div>
-                        
-                        <div class="row d-flex justify-content-center mt-5" id="ProductResult">
-                            <?php
-                            $product_rs = Databases::search("SELECT * FROM product
-                    INNER JOIN cook_type ON cook_type.cook_type_id=product.cook_type_id
-                    INNER JOIN meat_type ON meat_type.meat_type_id=product.meat_type_id ORDER BY `product_id` DESC");
-                            $product_num = $product_rs->num_rows;
-
-
-
-                            for ($x = 0; $x < $product_num; $x++) {
-
-                                $product_data = $product_rs->fetch_assoc();
-
-                                $img_m = Databases::search("SELECT * FROM `product_img` WHERE `product_id`='" . $product_data["product_id"] . "' ORDER BY `product_img_id` ASC");
-                                $img_q = Databases::search("SELECT * FROM `product_img` WHERE `product_id`='" . $product_data["product_id"] . "' ORDER BY `product_img_id` ASC");
-                                if ($img_m->num_rows >= 1) {
-                                    $img_d = $img_m->fetch_assoc();
-                                    $img = $img_d["product_img_path"];
-                                } else {
-                                    $img = null;
-                                }
-
-
-                                // $price = { () $product_data["price"] + 5% }
-                    
-                                ?>
-                                <div class="col-sm-6 col-xl-3">
-                                    <div class="card overflow-hidden rounded-2">
-                                        <div class="position-relative p-4 d-flex flex-row align-items-center" style="height:12rem;">
-                                            <a href="javascript:void(0)"><img src="<?php echo $img ?>"
-                                                    class="card-img-top rounded-0" alt="..."></a>
-                                            <a href="javascript:void(0)"
-                                                class="bg-orange rounded-circle p-2 text-white d-inline-flex position-absolute bottom-0 end-0 mb-n3 me-3"
-                                                data-bs-toggle="tooltip" data-bs-placement="top" data-bs-title="Add To Cart"><i
-                                                    class="ti ti-basket fs-4"></i></a>
-                                        </div>
-                                        <div class="card-body pt-3 p-4">
-                                            <h6 class="fs-4">
-                                                <?php echo $product_data['product_name'], "</br>", $product_data['cook_type_name'], " ", $product_data['meat_type_name'] ?>
-                                            </h6>
-                                            <div class="d-flex justify-content-end mt-2">
-                                                <button class="btn tex-g p-1 mx-1 rounded-0-5" data-bs-toggle="modal"
-                                                    data-bs-target="#exampleModal<?php echo $product_data["product_id"] ?>">UPDATE
-                                                </button><?php
-                                                    if($product_data["on_delete"]==0){
-                                                        ?>
-                                                        <button class='btn text-danger p-1 mx-1 rounded-0-5' onclick="disablePr(<?php echo $product_data['product_id'],',',$product_data['on_delete'] ?>)">DISABLE</button>
-                                                        <?php
-                                                    }else{
-                                                        ?>
-                                                        <button class='btn text- p-1 mx-1 rounded-0-5'  onclick="disablePr(<?php echo $product_data['product_id'],',',$product_data['on_delete'] ?>)">ENABLE</button>
-                                                        <?php
-                                                    }
-                                                    ?>
-                                                <?php
-                                                $productid = $product_data['product_id'];
-                                                ?>
-                                            </div>
-                                        </div>
+                        <div class="row">
+                            <h4 class="h2 text-black">Prioraty Level: High</h4>
+                            <div class="col-lg-8">
+                                <section>
+                                    <div>
+                                        <span class="h3 text-black">Call Boxes</span>
                                     </div>
-                                </div>
+                                    <div class="row">
+                                        <div class="col-12 d-flex">
+                                            <div class="col-12 col-md-6 col-lg-4 shadow-sm rounded-5 p-5 text-center mx-3 mt-3">
+                                                <img src="assets-admin/box.png" class="img-fluid" alt="">
+                                                <span class="mt-5 text-black h4">Booze Bites</span>
+                                                <br />
+                                                <span class="mt-5 text-black h5">Date: 12/30/2024</span> <br />
+                                                <span class="mt-5 text-danger h6">Deadline: 12/30/2024</span> <br />
 
-                                <!-- Update product popup -->
-                                <div class="modal fade" id="exampleModal<?php echo $productid ?>" tabindex="-1"
-                                    aria-labelledby="exampleModalLabel" aria-hidden="true">
-                                    <div class="modal-dialog modal-xl modal-dialog modal-dialog-scrollable">
+                                                <span class="mt-5 text-black h5">System Type: W</span> <br />
+                                                <button class="btn btn-success mt-3" data-bs-toggle="modal"
+                                                    data-bs-target="#modal"><i class="fa-regular fa-eye"></i>
+                                                    Show</button>
+                                            </div>
+
+                                        </div>
+
+                                    </div>
+                                </section>
+
+
+                                <!-- user details modal -->
+                                <div class="modal fade" id="modal" tabindex="-1" aria-labelledby="exampleModalLabel"
+                                    aria-hidden="true">
+                                    <div class="modal-dialog modal-lg">
                                         <div class="modal-content">
                                             <div class="modal-header">
-                                                <div class="modal-title fs-4 fw-bold" id="exampleModalLabel"><i class="fa fa-list"
-                                                        aria-hidden="true"></i>&nbsp;
-                                                    Product Management</div>
+                                                <div class="modal-title fs-4 fw-bold" id="exampleModalLabel"><i
+                                                        class="fa-regular fa-phone"></i>&nbsp;
+                                                    Call Details</div>
                                                 <button type="button" class="btn-close" data-bs-dismiss="modal"
                                                     aria-label="Close"></button>
                                             </div>
-                                            <div class="modal-body">
-                                                <div class="row d-flex justify-content-center my-2">
-                                                    <div class="col-12 col-lg-9 border shadow">
-                                                        <div class="row m-3">
-
-                                                            <div class="col-12 my-3">
-                                                                <div class="row d-flex justify-content-center">
-
-                                                                <?php
-                                                                
-                                                                for($cvn=1;$cvn<=$img_q->num_rows;$cvn++){
-
-                                                                    $img_data = $img_q->fetch_assoc();
-                                                                    $img = $img_data["product_img_path"];
-                                                                    ?>
-
-                                                                    <div class="col-8 col-md-4 mb-2" style="height: 200px;">
-                                                                        <input type="file" class="d-none" id="img_input_<?php echo $cvn; echo $productid; ?>">
-                                                                        <div class="border-x log-link d-flex justify-content-center align-items-center h-100 outer-div"
-                                                                            onclick="cProductImage(<?php echo $cvn; ?>,<?php echo $productid; ?>);">
-                                                                            <img src="<?php echo $img ?>" class="img-fluid" id="img_div_<?php echo $cvn; echo $productid; ?>">
-                                                                        </div>
+                                            <div class="modal-body pt-4">
+                                                <div class="card mb-0">
+                                                    <div class="row pt-3 px-2">
+                                                        <div
+                                                            class="col-4 col-md-2 d-flex justify-content-center align-items-center">
+                                                            <img src="./assets-admin/box.png" class="img-fluid" width="90px"
+                                                                alt="" srcset="">
+                                                        </div>
+                                                        <div class="col-8 col-md-10">
+                                                            <div class="row">
+                                                                <div class="col-12 col-md-6 mb-3">
+                                                                    <div class="form-floating">
+                                                                        <input type="text" class="form-control rounded-0"
+                                                                            id="floatingInput"
+                                                                            placeholder="title of the product"
+                                                                            value="Booze Bites" readonly>
+                                                                        <label for="floatingInput">Project Name</label>
                                                                     </div>
-
-                                                                    <?php
-                                                                }
-                                                                
-                                                                ?>
-
                                                                 </div>
-                                                            </div>
-                                                            <div class="col-3 mt-3">
-                                                                <div class="form-floating">
-                                                                    <input type="text" class="form-control rounded-0"
-                                                                        id="<?php echo $productid; ?>sku"
-                                                                        placeholder="title of the product"
-                                                                        value="<?php echo $product_data['product_id'] ?>">
-                                                                    <label for="floatingInput">ProductID</label>
+                                                                <div class="col-12 col-md-6 mb-3">
+                                                                    <div class="form-floating">
+                                                                        <input type="text" class="form-control rounded-0"
+                                                                            id="floatingInput"
+                                                                            placeholder="title of the product"
+                                                                            value="12/30/2024" readonly>
+                                                                        <label for="floatingInput">Date</label>
+                                                                    </div>
                                                                 </div>
-                                                            </div>
-                                                            <div class="col-9 mt-3">
-                                                                <div class="form-floating">
-                                                                    <input type="text" class="form-control rounded-0"
-                                                                        id="<?php echo $productid; ?>pt"
-                                                                        value="<?php echo $product_data["product_name"] ?>"
-                                                                        placeholder="title of the product">
-                                                                    <label for="floatingInput">Product Title</label>
+                                                                <div class="col-6 mb-3">
+                                                                    <div class="form-floating">
+                                                                        <input type="text" class="form-control rounded-0"
+                                                                            id="floatingInput"
+                                                                            placeholder="Custormer District" value="Colombo"
+                                                                            readonly>
+                                                                        <label for="floatingInput">District</label>
+                                                                    </div>
                                                                 </div>
-                                                            </div>
-                                                            <div class="col-6 mt-3">
-                                                                <div class="form-floating">
-                                                                    <select class="form-select rounded-0"
-                                                                        id="<?php echo $productid; ?>pc"
-                                                                        aria-label="Floating label select example">
-                                                                        <option selected
-                                                                            value="<?php echo $product_data["cook_type_id"] ?>">
-                                                                            <?php echo $product_data["cook_type_name"] ?>
-                                                                        </option>
-                                                                        <?php
-                                                                        $category_rs = Databases::search("SELECT * FROM `cook_type`");
-                                                                        $category_num = $category_rs->num_rows;
-                                                                        for ($i = 0; $i < $category_num; $i++) {
-                                                                            $category_data = $category_rs->fetch_assoc();
-                                                                            ?>
-                                                                            <option value="<?php echo $category_data["cook_type_id"] ?>">
-                                                                                <?php echo $category_data["cook_type_name"] ?></option>
-
-                                                                            <?php
-                                                                        }
-                                                                        ?>
-
-                                                                    </select>
-                                                                    <label for="floatingSelect">Select your product cook type
-                                                                        here</label>
+                                                                <div class="col-6 mb-3">
+                                                                    <div class="form-floating">
+                                                                        <input type="text" class="form-control rounded-0"
+                                                                            id="floatingInput"
+                                                                            placeholder="System Type" value="W"
+                                                                            readonly>
+                                                                        <label for="floatingInput">System Type</label>
+                                                                    </div>
                                                                 </div>
-                                                            </div>
-                                                            <div class="col-6 mt-3">
-                                                                <div class="form-floating">
-                                                                    <select class="form-select rounded-0"
-                                                                        id="<?php echo $productid; ?>pm"
-                                                                        aria-label="Floating label select example">
-                                                                        <option selected
-                                                                            value="<?php echo $product_data["meat_type_id"] ?>">
-                                                                            <?php echo $product_data["meat_type_name"] ?>
-                                                                        </option>
-                                                                        <?php
-                                                                        $categor_rs = Databases::search("SELECT * FROM `meat_type`");
-                                                                        $categor_num = $categor_rs->num_rows;
-                                                                        for ($i = 0; $i < $categor_num; $i++) {
-                                                                            $categor_data = $categor_rs->fetch_assoc();
-                                                                            ?>
-                                                                            <option value="<?php echo $categor_data["meat_type_id"] ?>">
-                                                                                <?php echo $categor_data["meat_type_name"] ?></option>
-
-                                                                            <?php
-                                                                        }
-                                                                        ?>
-
-                                                                    </select>
-                                                                    <label for="floatingSelect">Select your product meat type
-                                                                        here</label>
+                                                                <div class="col-12 mb-3">
+                                                                    <div class="form-floating">
+                                                                        <textarea type="text" class="form-control rounded-0"
+                                                                            id="floatingInput"
+                                                                            placeholder="System Type" value="W"
+                                                                            >Description Here Can Edit</textarea> 
+                                                                        <label for="floatingInput">Description</label>
+                                                                    </div>
                                                                 </div>
-                                                            </div>
-
-                                                            <div class="col-12 mt-3 mb-3">
-                                                                <textarea class="form-control rounded-0"
-                                                                    placeholder="Product Description"
-                                                                    id="<?php echo $productid; ?>pld"
-                                                                    style="height: 100px"><?php echo $product_data["description"] ?></textarea>
-                                                            </div>
-                                                            <div class="col-12 text-end">
-                                                                <button class="btn rounded-1 fw-bold x col-md-2"
-                                                                    onclick="update_product_real(<?php  echo $productid; ?>)"><i
-                                                                        class="fa fa-floppy-o" aria-hidden="true"></i>
-                                                                    SAVE</button>
+                                                                <div class="col-12 mb-3">
+                                                                    <div class="form-floating">
+                                                                        <textarea type="text" class="form-control rounded-0"
+                                                                            id="floatingInput"
+                                                                            placeholder="System Type" value="W"
+                                                                            >you can add call note which means call improvement</textarea> 
+                                                                        <label for="floatingInput">Add a Call Note</label>
+                                                                    </div>
+                                                                </div>
                                                             </div>
                                                         </div>
                                                     </div>
                                                 </div>
                                             </div>
+                                            <div class="modal-footer">
+                                                <div class="col-12 mt-3 text-end">
+                                                    <button class="btn fw-bold x" data-bs-dismiss="modal">Close</button>
+                                                    <button class="btn btn-success" data-bs-dismiss="modal">Update</button>
+                                                </div>
+                                            </div>
                                         </div>
                                     </div>
                                 </div>
-                                <!-- Update product popupend -->
+                                <!-- user details modal end-->
 
-                                <?php
-                            }
-                            ?>
 
+                            </div>
                         </div>
+
                     </div>
+
+
+
                 </div>
             </div>
-            <script src="https://cdn.tiny.cloud/1/v6ya2mxbd70fn22v774qp5fw78t114ccnejem2vy8oriyj04/tinymce/5/tinymce.min.js"
-                referrerpolicy="origin"></script>
-
-            <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.8/dist/umd/popper.min.js"
-                integrity="sha384-I7E8VVD/ismYTF4hNIPjVp/Zjvgyol6VFvRkX/vR+Vc4jQkC+hVqc2pM8ODewa9r"
-                crossorigin="anonymous"></script>
-            <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.min.js"
-                integrity="sha384-BBtl+eGJRgqQAUMxJ7pMwbEyER4l1g+O15P+16Ep7Q9Q+zqX6gSbd85u4mG4QzX+"
-                crossorigin="anonymous"></script>
-            <script src="../assets/libs/jquery/dist/jquery.min.js"></script>
-            <script src="../assets/libs/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
-            <script src="../assets/js/sidebarmenu.js"></script>
-            <script src="../assets/js/app.min.js"></script>
-            <script src="../admin-panel/assets-admin/js/script.js"></script>
-            <script src="../assets/libs/simplebar/dist/simplebar.js"></script>
-            <script src="../admin-panel/assets-admin/libs/jquery/dist/jquery.min.js"></script>
-            <script src="../admin-panel/assets-admin/libs/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
-            <script src="../admin-panel/assets-admin/js/sidebarmenu.js"></script>
-            <script src="../admin-panel/assets-admin/js/app.min.js"></script>
-            <script src="../admin-panel/assets-admin/libs/apexcharts/dist/apexcharts.min.js"></script>
-            <script src="../admin-panel/assets-admin/libs/simplebar/dist/simplebar.js"></script>
-            <script src="../admin-panel/assets-admin/js/dashboard.js"></script>
-            <script src="../script.js"></script>
-            <script src="../denu.js"></script>
-            <script src="../M.js"></script>
-            <!-- Include jQuery library -->
-            <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
-
 
         </body>
 
-        </html>
+        <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+        <script src="assets-admin/libs/jquery/dist/jquery.min.js"></script>
+        <script src="assets-admin/libs/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
+        <script src="assets-admin/js/sidebarmenu.js"></script>
+        <script src="assets-admin/js/app.min.js"></script>
+        <script src="assets-admin/libs/apexcharts/dist/apexcharts.min.js"></script>
+        <script src="assets-admin/libs/simplebar/dist/simplebar.js"></script>
+        <script src="assets-admin/js/dashboard.js"></script>
 
+        </html>
         <?php
     } else {
         ?>
