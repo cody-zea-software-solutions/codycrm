@@ -11,7 +11,7 @@ if (isset($_SESSION["a"])) {
   if ($u_detail->num_rows == 1) {
     session_abort();
     $u_details = $u_detail->fetch_assoc();
-?>
+    ?>
 
     <!doctype html>
     <html lang="en">
@@ -23,6 +23,15 @@ if (isset($_SESSION["a"])) {
       <link rel="shortcut icon" href="assets-admin/images/logos/logo.webp" type="image/x-icon">
 
       <link rel="stylesheet" href="assets-admin/css/styles.min.css" />
+      <link rel="stylesheet" href="https://site-assets.fontawesome.com/releases/v6.5.1/css/all.css">
+
+      <link rel="stylesheet" href="https://site-assets.fontawesome.com/releases/v6.5.1/css/sharp-thin.css">
+
+      <link rel="stylesheet" href="https://site-assets.fontawesome.com/releases/v6.5.1/css/sharp-solid.css">
+
+      <link rel="stylesheet" href="https://site-assets.fontawesome.com/releases/v6.5.1/css/sharp-regular.css">
+
+      <link rel="stylesheet" href="https://site-assets.fontawesome.com/releases/v6.5.1/css/sharp-light.css">
     </head>
 
     <body>
@@ -34,12 +43,100 @@ if (isset($_SESSION["a"])) {
         require "side.php";
 
         ?>
-        <!--  Main wrapper -->
         <div class="body-wrapper">
 
           <?php
           require "nav.php";
           ?>
+
+          <div class="container-fluid">
+            <div class="row">
+              <h4 class="h2 text-black">Dashboard</h4>
+              <div class="col-lg-8">
+                <section>
+                  <div>
+                    <span class="h3 text-black">Ongoing Projects</span>
+                  </div>
+                  <div class="row">
+                    <div class="col-12 d-flex">
+                       <div class="col-12 col-md-6 col-lg-4 shadow-sm rounded-5 p-5 text-center mx-3 mt-3">
+                      <img src="assets-admin/box.png" class="img-fluid" alt="">
+                      <span class="mt-5 text-black h4">Booze Bites</span>
+                      <br />
+                      <span class="mt-5 text-black h5">Date: 12/30/2024</span> <br />
+                      <span class="mt-5 text-danger h6">Deadline: 12/30/2024</span> <br />
+
+                      <span class="mt-5 text-black h5">System Type: W</span> <br />
+                      <button class="btn btn-danger mt-3"><i class="fa-thin fa-download"></i> Download</button>
+                    </div>
+                    <div class="col-12 col-md-6 col-lg-4 shadow-sm rounded-5 p-5 text-center mx-3 mt-3">
+                      <img src="assets-admin/box.png" class="img-fluid" alt="">
+                      <span class="mt-5 text-black h4">Ceynap</span>
+                      <br />
+                      <span class="mt-5 text-black h5">Date: 12/30/2024</span> <br />
+                      <span class="mt-5 text-danger h6">Deadline: 12/30/2024</span> <br />
+
+                      <span class="mt-5 text-black h5">System Type: W</span> <br />
+                      <button class="btn btn-danger mt-3"><i class="fa-thin fa-download"></i> Download</button>
+                    </div>
+                    <div class="col-12 col-md-6 col-lg-4 shadow-sm rounded-5 p-5 text-center mx-3 mt-3">
+                      <img src="assets-admin/box.png" class="img-fluid" alt="">
+                      <span class="mt-5 text-black h4">Cody Zea</span>
+                      <br />
+                      <span class="mt-5 text-black h5">Date: 12/30/2024</span> <br />
+                      <span class="mt-5 text-danger h6">Deadline: 12/30/2024</span> <br />
+
+                      <span class="mt-5 text-black h5">System Type: W</span> <br />
+                      <button class="btn btn-danger mt-3"><i class="fa-thin fa-download"></i> Download</button>
+                    </div>
+                    </div>
+                   
+                  </div>
+                </section>
+                <section class="mt-4">
+                  <div>
+                    <span class="h3 text-black">Deadline Focus</span>
+                  </div>
+                  <div class="row">
+                    <div class="col-12 d-flex">
+                       <div class="col-12 col-md-6 col-lg-4 shadow-sm rounded-5 p-5 text-center mt-3">
+                      <img src="assets-admin/deadline.png" class="img-fluid" alt="">
+                      <span class="mt-5 text-black h4">Ceynap</span>
+                      <br />
+                      <span class="mt-5 text-black h5">Date: 12/30/2024</span> <br />
+                      <span class="mt-5 text-danger h6">Deadline: 12/30/2024</span> <br />
+                      <span class="mt-5 text-black h5">System Type: W</span> <br />
+                      <button class="btn btn-danger mt-3"><i class="fa-thin fa-download"></i> Download</button>
+                    </div>
+                    <div class="col-12 col-md-6 col-lg-4 shadow-sm rounded-5 p-5 text-center mx-4 mt-3">
+                      <img src="assets-admin/deadline.png" class="img-fluid" alt="">
+                      <span class="mt-5 text-black h4">Booze Bites</span>
+                      <br />
+                      <span class="mt-5 text-black h5">Date: 12/30/2024</span> <br />
+                      <span class="mt-5 text-danger h6">Deadline: 12/30/2024</span> <br />
+                      <span class="mt-5 text-black h5">System Type: W</span> <br />
+                      <button class="btn btn-danger mt-3"><i class="fa-thin fa-download"></i> Download</button>
+                    </div>
+                    <div class="col-12 col-md-6 col-lg-4 shadow-sm rounded-5 p-5 text-center mx-4 mt-3">
+                      <img src="assets-admin/deadline.png" class="img-fluid" alt="">
+                      <span class="mt-5 text-black h4">Royal-X Business</span>
+                      <br />
+                      <span class="mt-5 text-black h5">Date: 12/30/2024</span> <br />
+                      <span class="mt-5 text-danger h6">Deadline: 12/30/2024</span> <br />
+                      <span class="mt-5 text-black h5">System Type: W</span> <br />
+                      <button class="btn btn-danger mt-3"><i class="fa-thin fa-download"></i> Download</button>
+                    </div>
+                    </div>
+                   
+                   
+                  </div>
+                </section>
+
+              </div>
+            </div>
+
+          </div>
+
 
 
         </div>
@@ -57,16 +154,16 @@ if (isset($_SESSION["a"])) {
     <script src="assets-admin/js/dashboard.js"></script>
 
     </html>
-  <?php
+    <?php
   } else {
-  ?>
+    ?>
 
     <script>
       alert("You Are Not an Admin");
       window.location = "authentication-login.php";
     </script>
 
-  <?php
+    <?php
   }
 } else {
   ?>
@@ -76,7 +173,7 @@ if (isset($_SESSION["a"])) {
     window.location = "authentication-login.php";
   </script>
 
-<?php
+  <?php
 
 }
 

@@ -1,0 +1,22 @@
+   <div class="page-wrapper" id="main-wrapper" data-layout="vertical" data-navbarbg="skin6" data-sidebartype="full"
+        data-sidebar-position="fixed" data-header-position="fixed">
+        <?php
+
+        require "side.php";
+
+        ?>
+        <div class="body-wrapper">
+
+          <?php
+          require "nav.php";
+          ?>
+
+          <div class="container">
+            <div class="row">
+              <h1>Ongoing Projects</h1>
+            </div>
+          </div>
+
+
+        </div>
+      </div>
