@@ -42,6 +42,14 @@ session_start();
           </a>
         </li>
         <li class="sidebar-item">
+          <a class="sidebar-link" href="call-reminder.php" aria-expanded="false">
+            <span>
+              <i class="fa fa-calendar-check-o" aria-hidden="true"></i>
+            </span>
+            <span class="hide-menu">Call Reminder</span>
+          </a>
+        </li>
+        <li class="sidebar-item">
           <a class="sidebar-link" href="ongoing.php" aria-expanded="false">
             <span>
               <i class="fa fa-plus-circle" aria-hidden="true"></i>

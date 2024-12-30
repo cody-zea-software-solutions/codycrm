@@ -1086,6 +1086,76 @@ function addCalls() {
     x.send(form);
 }
 
+function modifyCalls(iid,call_code) {
+
+    var priority = document.getElementById("priority"+iid).value;
+    var systemType = document.getElementById("s_type"+iid).value;
+    var budget = document.getElementById("budget"+iid).value;
+    var description = document.getElementById("description"+iid).value;
+    var next_date = document.getElementById("next_date"+iid).value;
+    var count = document.getElementById("count"+iid).value;
+
+    var toastclass = document.getElementById('custom-toast');
+    var toastElement = new bootstrap.Toast(document.getElementById('custom-toast'));
+    toastclass.className="toast align-items-center text-white bg-danger border-0 rounded-0 p-1";
+    var toastInner = document.getElementById("toast_inner");
+
+    // Check if 'budget' is empty
+    if (budget === "") {
+        toastInner.innerHTML="Enter the project budget.";
+        toastElement.show();
+        document.getElementById("budget").focus();
+        return;
+    }
+
+    // Check if 'description' is empty
+    if (description === "") {
+        toastInner.innerHTML="Enter the description.";
+        toastElement.show();
+        document.getElementById("description").focus();
+        return;
+    }
+
+    document.getElementById("modify_button"+iid).innerHTML="<div class='spinner-border' role='status'></div>";
+
+    // If all fields are valid, create the FormData and send the AJAX request
+    var form = new FormData();
+    form.append("next_id", iid);
+    form.append("priority", priority);
+    form.append("systemType", systemType);
+    form.append("budget", budget);
+    form.append("description", description);
+    form.append("next_date", next_date);
+    form.append("count", count);
+    form.append("call_code", call_code);
+
+    // Create XMLHttpRequest
+    var x = new XMLHttpRequest();
+
+    // Define the response handling
+    x.onreadystatechange = function () {
+        if (x.readyState == 4 && x.status == 200) {
+            document.getElementById("modify_button" + iid).innerHTML = "UPDATE";
+            var response = x.responseText;
+            if (response === "success") {
+                // Show success toast
+                toastclass.className="toast align-items-center text-white bg-success border-0 rounded-0 p-1";
+                toastInner.innerHTML="The call has been updates successfully.";
+                toastElement.show();
+                window.location.reload();
+            } else {
+                // Display the error message
+                toastInner.innerHTML=response;
+                toastElement.show();
+            }
+        }
+    };
+
+    // Send the data to addcallprocess.php
+    x.open("POST", "modifycallprocess.php", true);
+    x.send(form);
+}
+
 
 function admin_logout() {
     var r = new XMLHttpRequest();

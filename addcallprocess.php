@@ -25,9 +25,10 @@ if (isset($_SESSION["a"])) {
             die("Required fields are missing or incorrect.");
         }
 
-        if (!preg_match('/^(07[0-9]{8})$/', $mobile)) {
+        if (!preg_match('/^(07[0-9]{8}|04[0-9]{8})$/', $mobile)) {
             die("Invalid mobile number.");
         }
+        
 
         if (!is_numeric($budget)) {
             die("Budget must be a number.");
@@ -36,6 +37,7 @@ if (isset($_SESSION["a"])) {
         // Time zone and datetime
         date_default_timezone_set('Asia/Colombo');
         $currentDateTime = date('Y-m-d H:i:s');
+        $nextDateTime = date('Y-m-d H:i:s', strtotime($currentDateTime . ' +48 hours'));
 
         // Get unique call code - directly use last number from database instead of file
         $lastNumber = Databases::search("SELECT `last_code` FROM `code_tracker` LIMIT 1")->fetch_assoc()['last_code'] ?? 1203;
@@ -44,6 +46,10 @@ if (isset($_SESSION["a"])) {
 
         // Update the last code in the database
         Databases::iud("UPDATE `code_tracker` SET `last_code` = $newNumber");
+
+        if($priority == 1 || $priority == 2 || $priority == 3) {
+            Databases::iud("INSERT INTO `next_call`(`count`,`call_code`,`next_date`) VALUES ('2','$uniqueCode','$nextDateTime')");
+        }
 
         // Insert the data
         $sql = "INSERT INTO `calls` (`call_code`, `name`, `mobile`, `date_time`, `description`, `budget`, `prioraty_id`, `system_id`, `district_id`, `user_id`) 
