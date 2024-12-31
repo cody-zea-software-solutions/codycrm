@@ -72,7 +72,20 @@ if (isset($_SESSION["a"])) {
                                                     <span class="mt-5 text-black h4"><?php echo $xdata["name"]; ?></span>
                                                     <br />
                                                     <span class="mt-5 text-black h5">Date: <?php echo $xdata["date_time"]; ?></span><br />
-                                                    <span class="mt-5 text-danger h6">Deadline: 12/30/2024</span><br />
+                                                    <?php
+                                                    $xm = Databases::search("SELECT * FROM `ongoing_projects` WHERE `call_id`='" . $xdata['call_code'] . "' ");
+                                                    $xnum = $xm->num_rows;
+                                                    if( $xnum == 1){
+                                                        $deadline = $xm->fetch_assoc();
+                                                        ?>
+                                                         <span class="mt-5 text-danger h6">Deadline: <?php echo$deadline["deadline"] ;  ?></span><br />
+                                                        <?php
+                                                    }else{
+                                                        ?>
+                                                        <span class="mt-5 text-danger h6">Deadline: </span><br />
+                                                        <?php
+                                                    }
+                                                     ?>
                                                     <span class="mt-5 text-danger h6">add new or update Deadline below</span><br />
                                                     <input type="date" id="Deadline" class="form-control" placeholder="add new Deadline"/>
                                                     <?php

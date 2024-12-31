@@ -5,7 +5,6 @@ $Deadline = $_POST["Deadline"];
 
 $x = Databases::search("SELECT * FROM `ongoing_projects` WHERE   `call_id`='" . $code . "' ");
 $xnum = $x->num_rows;
-echo $xnum;
 if ($xnum == 1) {
      Databases::iud("UPDATE `codyzea`.`ongoing_projects` SET 
      `deadline` = '" . $Deadline . "' WHERE (`call_id` = '" . $code . "');");
