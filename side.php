@@ -34,6 +34,14 @@ session_start();
           </a>
         </li>
         <li class="sidebar-item">
+          <a class="sidebar-link" href="all-calls.php" aria-expanded="false">
+            <span>
+            <i class="fa fa-phone" aria-hidden="true"></i>
+            </span>
+            <span class="hide-menu">All Calls</span>
+          </a>
+        </li>
+        <li class="sidebar-item">
           <a class="sidebar-link" href="call-manage.php" aria-expanded="false">
             <span>
               <i class="fa fa-archive" aria-hidden="true"></i>

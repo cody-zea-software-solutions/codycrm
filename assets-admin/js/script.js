@@ -1156,6 +1156,30 @@ function modifyCalls(iid,call_code) {
     x.send(form);
 }
 
+function searchCall(){
+    var keyword = document.getElementById("keyword").value;
+    var type = document.getElementById("type").value;
+    var view = document.getElementById("UserResult");
+
+    var x = new XMLHttpRequest();
+
+    var form = new FormData();
+    form.append("keyword", keyword);
+    form.append("type", type);
+
+    x.onreadystatechange = function () {
+        if (x.readyState == 4 && x.status == 200) {
+            var response = x.responseText;
+            view.innerHTML = response;
+        }
+    };
+
+    // Send the data to addcallprocess.php
+    x.open("POST", "searchcall.php", true);
+    x.send(form);
+
+}
+
 
 function admin_logout() {
     var r = new XMLHttpRequest();

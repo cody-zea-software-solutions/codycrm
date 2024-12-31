@@ -28,9 +28,13 @@ if (isset($_SESSION["a"])) {
 
         if ($priority == 1 || $priority == 2 || $priority == 3) {
             $nextDateTime = date('Y-m-d H:i:s', strtotime($next_date . ' +96 hours'));
-            $count = $count + 1;
-            Databases::iud("UPDATE `next_call` SET `count` = '$count', `next_date` = '$nextDateTime' WHERE `next_id` = '$next_id'");
-        }else{
+            if ($count < 4) {
+                $count = $count + 1;
+                Databases::iud("UPDATE `next_call` SET `count` = '$count', `next_date` = '$nextDateTime' WHERE `next_id` = '$next_id'");
+            }else{
+                die("Maximum call time reached.");
+            }
+        } else {
             Databases::iud("UPDATE `calls` SET `st` = '0' WHERE `next_id` = '$next_id'");
         }
 
