@@ -73,12 +73,15 @@ if (isset($_SESSION["a"])) {
                                                     <br />
                                                     <span class="mt-5 text-black h5">Date: <?php echo $xdata["date_time"]; ?></span><br />
                                                     <span class="mt-5 text-danger h6">Deadline: 12/30/2024</span><br />
+                                                    <span class="mt-5 text-danger h6">add new or update Deadline below</span><br />
+                                                    <input type="date" id="Deadline" class="form-control" placeholder="add new Deadline"/>
                                                     <?php
                                                     $sy = Databases::search("SELECT * FROM `system_type` WHERE `type_id`='" . $xdata["system_id"] . "'");
                                                     $syy = $sy->fetch_assoc();
                                                     ?>
                                                     <span class="mt-5 text-black h5">System Type: <?php echo $syy["type_name"]; ?></span><br />
                                                     <button class="btn btn-danger mt-3"><i class="fa fa-download" onclick="generatePDF('<?php echo $xdata['call_code']; ?>')"></i> Download</button>
+                                                    <button class="btn btn-danger mt-3" onclick="AddDeadline('<?php echo $xdata['call_code']; ?>')"><i class="fa"></i>ADD Deadline</button>
                                                 </div>
                                             <?php
                                             }

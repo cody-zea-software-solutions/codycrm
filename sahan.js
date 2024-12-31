@@ -100,4 +100,20 @@ function missnotesave(){
      req.open("POST", "up_miss_details.php", true);
      req.send(form);
 }
-
+function AddDeadline(code){
+     var Deadline = document.getElementById("Deadline").value;
+    var req = new XMLHttpRequest();
+    var form = new FormData();
+    form.append("Deadline",Deadline);
+    form.append("code",code);
+    req.onreadystatechange = function () {
+     if (req.readyState === 4) {
+          if (req.status === 200) {
+               var x = req.responseText;
+               alert(x);
+          }
+     }
+}
+req.open("POST", "ADDDeadline.php", true);
+req.send(form);
+}
