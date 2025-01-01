@@ -58,7 +58,7 @@ if (isset($_SESSION["a"])) {
                                     </div>
                                     <div class="row">
 
-                                    
+
                                         <div class="col-12 d-flex">
                                             <?php
                                             $x = Databases::search("SELECT * FROM `calls` WHERE `prioraty_id`='4'");
@@ -75,63 +75,64 @@ if (isset($_SESSION["a"])) {
                                                     <?php
                                                     $xm = Databases::search("SELECT * FROM `ongoing_projects` WHERE `call_id`='" . $xdata['call_code'] . "' ");
                                                     $xnum = $xm->num_rows;
-                                                    if( $xnum == 1){
+                                                    if ($xnum == 1) {
                                                         $deadline = $xm->fetch_assoc();
-                                                        ?>
-<!-- Deadline Display -->
-<span class="mt-5 deadline-text h6">
-    Deadline: <?php echo $deadline["deadline"]; ?>
-</span>
+                                                    ?>
+                                                        
+                                                        <span class="mt-5 deadline-text h6">
+                                                            Deadline: <?php echo $deadline["deadline"]; ?>
+                                                        </span>
 
-<!-- Add a button for the popup (optional) -->
-<button id="deadline-popup-btn" class="btn btn-primary mt-3">Check Deadline</button>
+                                                      
+                                                        <button id="deadline-popup-btn" class="btn btn-primary mt-3">Check Deadline</button>
 
-<!-- Include SweetAlert2 -->
-<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+                                                        
+                                                        <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 
-<style>
-    .deadline-text {
-        font-weight: bold;
-        font-size: 1.2rem;
-        animation: red-to-black 2s infinite;
-    }
+                                                        <style>
+                                                            .deadline-text {
+                                                                font-weight: bold;
+                                                                font-size: 1.2rem;
+                                                                animation: red-to-black 2s infinite;
+                                                            }
 
-    @keyframes red-to-black {
-        0% {
-            color: red;
-        }
-        50% {
-            color: black;
-        }
-        100% {
-            color: red;
-        }
-    }
-</style>
+                                                            @keyframes red-to-black {
+                                                                0% {
+                                                                    color: red;
+                                                                }
 
-<script>
-    // Trigger a special popup for the deadline
-    document.getElementById('deadline-popup-btn').addEventListener('click', function () {
-        Swal.fire({
-            title: 'Deadline Information',
-            text: 'The deadline is: <?php echo $deadline["deadline"]; ?>',
-            icon: 'info',
-            confirmButtonText: 'OK',
-            customClass: {
-                popup: 'custom-swal-popup'
-            }
-        });
-    });
-</script>
-                                                        <?php
-                                                    }else{
-                                                        ?>
+                                                                50% {
+                                                                    color: black;
+                                                                }
+
+                                                                100% {
+                                                                    color: red;
+                                                                }
+                                                            }
+                                                        </style>
+
+                                                        <script>
+                                                            document.getElementById('deadline-popup-btn').addEventListener('click', function() {
+                                                                Swal.fire({
+                                                                    title: 'Deadline Information',
+                                                                    text: 'The deadline is: <?php echo $deadline["deadline"]; ?>',
+                                                                    icon: 'info',
+                                                                    confirmButtonText: 'OK',
+                                                                    customClass: {
+                                                                        popup: 'custom-swal-popup'
+                                                                    }
+                                                                });
+                                                            });
+                                                        </script>
+                                                    <?php
+                                                    } else {
+                                                    ?>
                                                         <span class="mt-5 text-danger h6">Deadline: </span><br />
-                                                        <?php
+                                                    <?php
                                                     }
-                                                     ?>
+                                                    ?>
                                                     <span class="mt-5 text-danger h6">add new or update Deadline below</span><br />
-                                                    <input type="date" id="Deadline" class="form-control" placeholder="add new Deadline"/>
+                                                    <input type="date" id="Deadline" class="form-control" placeholder="add new Deadline" />
                                                     <?php
                                                     $sy = Databases::search("SELECT * FROM `system_type` WHERE `type_id`='" . $xdata["system_id"] . "'");
                                                     $syy = $sy->fetch_assoc();
@@ -169,6 +170,7 @@ if (isset($_SESSION["a"])) {
         <script src="assets-admin/libs/simplebar/dist/simplebar.js"></script>
         <script src="assets-admin/js/dashboard.js"></script>
         <script src="sahan.js"></script>
+
         </html>
     <?php
     } else {
