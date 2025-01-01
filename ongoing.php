@@ -78,7 +78,7 @@ if (isset($_SESSION["a"])) {
                                                     if( $xnum == 1){
                                                         $deadline = $xm->fetch_assoc();
                                                         ?>
-                                                         <span class="mt-5 text-danger h6">Deadline: <?php echo$deadline["deadline"] ;  ?></span><br />
+                                                         <span class="mt-5 text-danger h6">Deadline: <?php echo $deadline["deadline"] ;  ?></span><br />
                                                         <?php
                                                     }else{
                                                         ?>
