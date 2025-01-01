@@ -112,7 +112,7 @@ if (isset($_SESSION["a"])) {
                                                             <div class="row">
                                                                 <div class="col-12 mb-3">
                                                                     <div class="form-floating">
-                                                                        <textarea type="text" class="form-control rounded-0" rows="4" cols="50" id="floatingInputnote" placeholder="System Type">you can add call note which means call improvement</textarea>
+                                                                        <textarea type="text" class="form-control rounded-0" rows="4" cols="50" id="floatingInputnote" placeholder="System Type"><?php echo $xdata['note']; ?></textarea>
                                                                         <label for="floatingInput">Add a Note</label>
                                                                     </div>
                                                                 </div>

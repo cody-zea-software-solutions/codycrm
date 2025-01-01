@@ -78,7 +78,51 @@ if (isset($_SESSION["a"])) {
                                                     if( $xnum == 1){
                                                         $deadline = $xm->fetch_assoc();
                                                         ?>
-                                                         <span class="mt-5 text-danger h6">Deadline: <?php echo $deadline["deadline"] ;  ?></span><br />
+<!-- Deadline Display -->
+<span class="mt-5 deadline-text h6">
+    Deadline: <?php echo $deadline["deadline"]; ?>
+</span>
+
+<!-- Add a button for the popup (optional) -->
+<button id="deadline-popup-btn" class="btn btn-primary mt-3">Check Deadline</button>
+
+<!-- Include SweetAlert2 -->
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+
+<style>
+    .deadline-text {
+        font-weight: bold;
+        font-size: 1.2rem;
+        animation: red-to-black 2s infinite;
+    }
+
+    @keyframes red-to-black {
+        0% {
+            color: red;
+        }
+        50% {
+            color: black;
+        }
+        100% {
+            color: red;
+        }
+    }
+</style>
+
+<script>
+    // Trigger a special popup for the deadline
+    document.getElementById('deadline-popup-btn').addEventListener('click', function () {
+        Swal.fire({
+            title: 'Deadline Information',
+            text: 'The deadline is: <?php echo $deadline["deadline"]; ?>',
+            icon: 'info',
+            confirmButtonText: 'OK',
+            customClass: {
+                popup: 'custom-swal-popup'
+            }
+        });
+    });
+</script>
                                                         <?php
                                                     }else{
                                                         ?>

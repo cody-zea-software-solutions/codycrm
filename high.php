@@ -156,7 +156,7 @@ if (isset($_SESSION["a"])) {
                                                                 </div>
                                                                 <div class="col-12 mb-3">
                                                                     <div class="form-floating">
-                                                                        <textarea class="form-control rounded-0" id="floatingInputNote"></textarea>
+                                                                        <textarea class="form-control rounded-0" id="floatingInputNote"><?php echo $xdata['note']; ?></textarea>
                                                                         <label for="floatingInputNote">Add a Call Note</label>
                                                                     </div>
                                                                 </div>
