@@ -90,33 +90,79 @@ if (isset($_SESSION["a"])) {
                   </div>
                   <div class="row">
                     <div class="col-12 d-flex">
-                      <div class="col-12 col-md-6 col-lg-4 shadow-sm rounded-5 p-5 text-center mt-3">
-                        <img src="assets-admin/deadline.png" class="img-fluid" alt="">
-                        <span class="mt-5 text-black h4">Ceynap</span>
-                        <br />
-                        <span class="mt-5 text-black h5">Date: 12/30/2024</span> <br />
-                        <span class="mt-5 text-danger h6">Deadline: 12/30/2024</span> <br />
-                        <span class="mt-5 text-black h5">System Type: W</span> <br />
-                        <button class="btn btn-danger mt-3"><i class="fa-thin fa-download"></i> Download</button>
-                      </div>
-                      <div class="col-12 col-md-6 col-lg-4 shadow-sm rounded-5 p-5 text-center mx-4 mt-3">
-                        <img src="assets-admin/deadline.png" class="img-fluid" alt="">
-                        <span class="mt-5 text-black h4">Booze Bites</span>
-                        <br />
-                        <span class="mt-5 text-black h5">Date: 12/30/2024</span> <br />
-                        <span class="mt-5 text-danger h6">Deadline: 12/30/2024</span> <br />
-                        <span class="mt-5 text-black h5">System Type: W</span> <br />
-                        <button class="btn btn-danger mt-3"><i class="fa-thin fa-download"></i> Download</button>
-                      </div>
-                      <div class="col-12 col-md-6 col-lg-4 shadow-sm rounded-5 p-5 text-center mx-4 mt-3">
-                        <img src="assets-admin/deadline.png" class="img-fluid" alt="">
-                        <span class="mt-5 text-black h4">Royal-X Business</span>
-                        <br />
-                        <span class="mt-5 text-black h5">Date: 12/30/2024</span> <br />
-                        <span class="mt-5 text-danger h6">Deadline: 12/30/2024</span> <br />
-                        <span class="mt-5 text-black h5">System Type: W</span> <br />
-                        <button class="btn btn-danger mt-3"><i class="fa-thin fa-download"></i> Download</button>
-                      </div>
+                      <!-- !-->
+                      <?php
+                      // Fetch ongoing projects ordered by deadline
+                      $v = Databases::search("SELECT * FROM `ongoing_projects` ORDER BY `deadline` ASC");
+                      $vnum = $v->num_rows;
+
+                      for ($i = 0; $i < $vnum; $i++) {
+                        $vdata = $v->fetch_assoc();
+                        $ui = Databases::search("SELECT * FROM `calls` WHERE `call_code`='" . $vdata["call_id"] . "' ");
+                        $uii = $ui->fetch_assoc();
+                      ?>
+                        <div class="col-12 col-md-6 col-lg-4 shadow-sm rounded-5 p-5 text-center mt-3">
+                          <img src="assets-admin/deadline.png" class="img-fluid" alt="">
+                          <span class="mt-5 text-black h4"><?php echo  $uii["name"]; ?></span>
+                          <br />
+                          <span class="mt-5 text-black h5">Date: <?php echo  $uii["date_time"]; ?></span> <br />
+                          <hr />
+                          <span class="mt-5 deadline-text h6">
+                            <?php
+                            $dealine = $vdata["deadline"];
+                            ?>
+                            Deadline: <?php echo $dealine; ?>
+                          </span>
+                          <button id="deadline-popup-btn" onclick="deadlinepop('<?php echo $dealine ?>');" class="btn btn-primary mt-3">Check Deadline</button>
+                          <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+                          <style>
+                            .deadline-text {
+                              font-weight: bold;
+                              font-size: 1.2rem;
+                              animation: red-to-black 2s infinite;
+                            }
+
+                            @keyframes red-to-black {
+                              0% {
+                                color: red;
+                              }
+
+                              50% {
+                                color: black;
+                              }
+
+                              100% {
+                                color: red;
+                              }
+                            }
+                          </style>
+                          <script>
+                            function deadlinepop(deadline) {
+                              Swal.fire({
+                                title: 'Deadline Information',
+                                text: `The deadline is: ${deadline}`,
+                                icon: 'info',
+                                confirmButtonText: 'OK',
+                                customClass: {
+                                  popup: 'custom-swal-popup'
+                                }
+                              });
+                            }
+                          </script>
+                          <?php
+                          // Fetch system type details
+                          $sy = Databases::search("SELECT * FROM `system_type` WHERE `type_id`='" . $uii["system_id"] . "'");
+                          $syy = $sy->fetch_assoc();
+                          ?>
+                          <span class="mt-5 text-black h5">System Type: <?php echo $syy["type_name"]; ?></span><br />
+                          <!-- Download button with PDF generation -->
+                          <button class="btn btn-danger mt-3"><i class="fa fa-download" onclick="generatePDF('<?php echo $uii["call_code"]; ?>')"></i> Download</button>
+                        </div>
+                      <?php
+                      }
+                      ?>
+                      <!-- !-->
+
                     </div>
 
 
@@ -143,6 +189,7 @@ if (isset($_SESSION["a"])) {
     <script src="assets-admin/libs/apexcharts/dist/apexcharts.min.js"></script>
     <script src="assets-admin/libs/simplebar/dist/simplebar.js"></script>
     <script src="assets-admin/js/dashboard.js"></script>
+    <script src="sahan.js"></script>
 
     </html>
   <?php
