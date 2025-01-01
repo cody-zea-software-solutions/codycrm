@@ -61,7 +61,7 @@ if (isset($_SESSION["a"])) {
                                     
                                         <div class="col-12 d-flex">
                                             <?php
-                                            $x = Databases::search("SELECT * FROM `calls` WHERE `prioraty_id`='1'");
+                                            $x = Databases::search("SELECT * FROM `calls` WHERE `prioraty_id`='4'");
                                             $xnum = $x->num_rows;
 
                                             for ($i = 0; $i < $xnum; $i++) {
