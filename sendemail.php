@@ -155,15 +155,6 @@ $result = Databases::search($query);
                req.send(form);
           }
 
-          function sendMail(email) {
-               if (!email) {
-                    alert("No email address available!");
-                    return;
-               }
-               alert(`Sending email to ${email}`);
-               // Add AJAX logic here to send the email
-          }
-
           function deleteEntry(callCode) {
                if (confirm("Are you sure you want to delete this entry?")) {
                     console.log(`Deleting entry with Call Code: ${callCode}`);
@@ -177,5 +168,5 @@ $result = Databases::search($query);
           }
      </script>
 </body>
-
+<script src="sahan.js"></script>
 </html>

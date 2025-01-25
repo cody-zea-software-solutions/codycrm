@@ -82,13 +82,13 @@ function whynote(callCode) {
      req.open("POST", "detail.php", true);
      req.send(form);
 }
-function missnotesave(){
+function missnotesave() {
      var callid = document.querySelector('#callid').value;
      var note = document.getElementById("floatingInputnote").value;
      var req = new XMLHttpRequest();
      form = new FormData();
-     form.append("code",callid);
-     form.append("snote",note);
+     form.append("code", callid);
+     form.append("snote", note);
      req.onreadystatechange = function () {
           if (req.readyState === 4) {
                if (req.status === 200) {
@@ -100,20 +100,39 @@ function missnotesave(){
      req.open("POST", "up_miss_details.php", true);
      req.send(form);
 }
-function AddDeadline(code){
+function AddDeadline(code) {
      var Deadline = document.getElementById("Deadline").value;
-    var req = new XMLHttpRequest();
-    var form = new FormData();
-    form.append("Deadline",Deadline);
-    form.append("code",code);
-    req.onreadystatechange = function () {
-     if (req.readyState === 4) {
-          if (req.status === 200) {
-               var x = req.responseText;
-               alert(x);
+     var req = new XMLHttpRequest();
+     var form = new FormData();
+     form.append("Deadline", Deadline);
+     form.append("code", code);
+     req.onreadystatechange = function () {
+          if (req.readyState === 4) {
+               if (req.status === 200) {
+                    var x = req.responseText;
+                    alert(x);
+               }
           }
      }
+     req.open("POST", "ADDDeadline.php", true);
+     req.send(form);
 }
-req.open("POST", "ADDDeadline.php", true);
-req.send(form);
+function sendMail(email) {
+     if (!email) {
+          alert("No email address available!");
+          return;
+     }
+     var req = new XMLHttpRequest();
+     var form = new FormData();
+     form.append("email", email);
+     req.onreadystatechange = function () {
+          if (req.readyState === 4) {
+               if (req.status === 200) {
+                    var x = req.responseText;
+                    alert(x);
+               }
+          }
+     }
+     req.open("POST", "send_email.php", true);
+     req.send(form);
 }
