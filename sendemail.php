@@ -85,7 +85,64 @@ $result = Databases::search($query);
                                    <td>
                                         <div class="btn-action">
                                              <button class="btn btn-primary btn-sm" onclick="sendMail('<?= htmlspecialchars($row['email']) ?>')">Send Email</button>
-                                             <button class="btn btn-danger btn-sm" onclick="deleteEntry('<?= $row['call_code'] ?>')">Delete</button>
+                                             <!-- Button to trigger modal -->
+                                             <button class="btn btn-danger btn-sm" data-bs-toggle="modal" data-bs-target="#emailTemplateModal" onclick="setCallCode('<?= $row['call_code'] ?>')">
+                                                  Send Email Template
+                                             </button>
+
+                                             <!-- Bootstrap Modal -->
+                                             <div class="modal fade" id="emailTemplateModal" tabindex="-1" aria-labelledby="emailTemplateModalLabel" aria-hidden="true">
+                                                  <div class="modal-dialog">
+                                                       <div class="modal-content">
+                                                            <div class="modal-header">
+                                                                 <h5 class="modal-title" id="emailTemplateModalLabel">Enter Email Template</h5>
+                                                                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                                                            </div>
+                                                            <div class="modal-body">
+                                                                 <input id="callCode">
+                                                                 <textarea id="emailTemplate" class="form-control" rows="5" placeholder="Enter email template..."></textarea>
+                                                            </div>
+                                                            <div class="modal-footer">
+                                                                 <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                                                                 <button type="button" class="btn btn-primary" onclick="sendEmailTemplate()">Send</button>
+                                                            </div>
+                                                       </div>
+                                                  </div>
+                                             </div>
+
+                                             <!-- JavaScript -->
+                                             <script>
+                                                  function setCallCode(callCode) {
+                                                       document.getElementById('callCode').value = callCode;
+                                                  }
+
+                                                  function sendEmailTemplate() {
+                                                       let callCode = document.getElementById('callCode').value;
+                                                       let templateContent = document.getElementById('emailTemplate').value;
+
+                                                       if (templateContent.trim() === "") {
+                                                            alert("Please enter an email template.");
+                                                            return;
+                                                       }
+
+                                                       let formData = new FormData();
+                                                       formData.append("call_code", callCode);
+                                                       formData.append("template", templateContent);
+
+                                                       fetch('send_emailpro.php', {
+                                                                 method: 'POST',
+                                                                 body: formData // No JSON headers needed
+                                                            })
+                                                            .then(response => response.text()) // Expecting plain text response
+                                                            .then(data => {
+                                                                 alert(data); // Show response message
+                                                                 document.getElementById('emailTemplate').value = "";
+                                                                 let modal = new bootstrap.Modal(document.getElementById('emailTemplateModal'));
+                                                                 modal.hide();
+                                                            })
+                                                            .catch(error => console.error('Error:', error));
+                                                  }
+                                             </script>
                                         </div>
                                    </td>
                               </tr>
@@ -147,11 +204,11 @@ $result = Databases::search($query);
                               modal.hide();
                               console.log(`Email: ${email}, Call Code: ${callCode}`);
                               alert(req.responseText);
-                            //  alert(`Email "${email}" added for Call Code: ${callCode}`);
+                              //  alert(`Email "${email}" added for Call Code: ${callCode}`);
                          }
                     }
                }
-               req.open("POST","addemailpro.php",true);
+               req.open("POST", "addemailpro.php", true);
                req.send(form);
           }
 
@@ -169,4 +226,5 @@ $result = Databases::search($query);
      </script>
 </body>
 <script src="sahan.js"></script>
+
 </html>
