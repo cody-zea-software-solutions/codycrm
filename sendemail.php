@@ -89,6 +89,155 @@ $result = Databases::search($query);
                                              <button class="btn btn-danger btn-sm" data-bs-toggle="modal" data-bs-target="#emailTemplateModal" onclick="setCallCode('<?= $row['call_code'] ?>')">
                                                   Send Email Template
                                              </button>
+                                             <!-- Button to trigger the modal -->
+                                             <button class="btn btn-danger btn-sm" data-bs-toggle="modal" data-bs-target="#emailTemplateModal2" onclick="sendcustome('<?= $row['email'] ?>')">
+                                                  Send Custom Email
+                                             </button>
+                                             <script>
+                                                  function sendcustome(email) {
+                                                       var modal = new bootstrap.Modal(document.getElementById('emailTemplateModal2'));
+                                                       modal.show();
+                                                       document.getElementById("email2").textContent = email;
+                                                  }
+                                             </script>
+                                             <!-- Modal -->
+                                             <div class="modal fade" id="emailTemplateModal2" tabindex="-1" aria-labelledby="emailTemplateModalLabel" aria-hidden="true">
+                                                  <div class="modal-dialog modal-lg">
+                                                       <div class="modal-content">
+                                                            <div class="modal-header bg-danger text-white">
+                                                                 <p id="email2" type="email" readonly>
+                                                                 <h5 class="modal-title" id="emailTemplateModalLabel">Custom Email Template</h5>
+                                                                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                                                            </div>
+                                                            <div class="modal-body">
+                                                                 <form id="emailTemplateForm" enctype="multipart/form-data">
+                                                                      <!-- Title Input -->
+                                                                      <div class="mb-3">
+                                                                           <label for="emailTitle" class="form-label">Title</label>
+                                                                           <textarea id="emailTitle" name="emailTitle" placeholder="Enter email title"></textarea>
+                                                                      </div>
+
+                                                                      <!-- Description Input -->
+                                                                      <div class="mb-3">
+                                                                           <label for="emailDescription" class="form-label">Description</label>
+                                                                           <textarea id="emailDescription" name="emailDescription" placeholder="Enter email description"></textarea>
+                                                                      </div>
+
+                                                                      <!-- Header Image Upload -->
+                                                                      <div class="mb-3">
+                                                                           <label for="headerImage" class="form-label">Header Image</label>
+                                                                           <input type="file" class="form-control" id="headerImage" name="headerImage" accept="image/*">
+                                                                      </div>
+
+                                                                      <!-- Footer Image Upload -->
+                                                                      <div class="mb-3">
+                                                                           <label for="footerImage" class="form-label">Footer Image</label>
+                                                                           <input type="file" class="form-control" id="footerImage" name="footerImage" accept="image/*">
+                                                                      </div>
+                                                                 </form>
+                                                            </div>
+                                                            <div class="modal-footer">
+                                                                 <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                                                                 <button type="button" class="btn btn-danger" onclick="sendEditEmail();">Send Email</button>
+                                                            </div>
+                                                       </div>
+                                                  </div>
+                                             </div>
+                                             <script src="https://cdn.ckeditor.com/ckeditor5/36.0.0/classic/ckeditor.js"></script>
+                                             <script>
+                                                  let emailTitleEditor, emailDescriptionEditor;
+
+                                                  document.addEventListener("DOMContentLoaded", () => {
+                                                       // Set the license key
+                                                       window.CKEDITOR_LICENSE_KEY = 'eyJhbGciOiJFUzI1NiJ9.eyJleHAiOjE3NzA1OTUxOTksImp0aSI6ImMxMDE4YjEzLTNmOWMtNDYyMi05MGNhLWJlMjBkNGNiMWNjMiIsInVzYWdlRW5kcG9pbnQiOiJodHRwczovL3Byb3h5LWV2ZW50LmNrZWRpdG9yLmNvbSIsImRpc3RyaWJ1dGlvbkNoYW5uZWwiOlsiY2xvdWQiLCJkcnVwYWwiXSwiZmVhdHVyZXMiOlsiRFJVUCJdLCJ2YyI6ImE4MTlkNmQwIn0.AGE_WHmzPBHNQh0NVlnOO8ZMYrK52X7mbzkj84Zinh5ADLVTGJB8hYNHxUzqVEPFoRN56lRWJrUcr-2ALxvxCQ';
+
+                                                       // Configuration for CKEditor with all features enabled
+                                                       const editorConfig = {
+                                                            toolbar: [
+                                                                 'heading', '|',
+                                                                 'bold', 'italic', 'underline', 'strikethrough', '|',
+                                                                 'fontFamily', 'fontSize', 'fontColor', 'fontBackgroundColor', '|',
+                                                                 'link', 'bulletedList', 'numberedList', '|',
+                                                                 'alignment', 'indent', 'outdent', '|',
+                                                                 'imageUpload', 'blockQuote', 'insertTable', 'mediaEmbed', '|',
+                                                                 'undo', 'redo'
+                                                            ],
+                                                            language: 'en',
+                                                            image: {
+                                                                 toolbar: ['imageTextAlternative', 'imageStyle:full', 'imageStyle:side']
+                                                            },
+                                                            table: {
+                                                                 contentToolbar: ['tableColumn', 'tableRow', 'mergeTableCells']
+                                                            },
+                                                            licenseKey: window.CKEDITOR_LICENSE_KEY
+                                                       };
+
+                                                       // Initialize CKEditor for Title
+                                                       ClassicEditor.create(document.querySelector("#emailTitle"), editorConfig)
+                                                            .then((editor) => {
+                                                                 emailTitleEditor = editor;
+                                                            })
+                                                            .catch((error) => {
+                                                                 console.error("Error initializing emailTitleEditor:", error);
+                                                            });
+
+                                                       // Initialize CKEditor for Description
+                                                       ClassicEditor.create(document.querySelector("#emailDescription"), editorConfig)
+                                                            .then((editor) => {
+                                                                 emailDescriptionEditor = editor;
+                                                            })
+                                                            .catch((error) => {
+                                                                 console.error("Error initializing emailDescriptionEditor:", error);
+                                                            });
+                                                  });
+                                             </script>
+
+
+                                             <script>
+                                                  function sendEditEmail() {
+                                                       // Get data from TinyMCE editors
+                                                       var emailtitle = emailTitleEditor.getData();
+                                                       var emailDescription = emailDescriptionEditor.getData();
+                                                       var email = document.getElementById("email2").textContent;
+                                                       alert(email);
+
+                                                       // Get files from input elements
+                                                       var headerImage = document.getElementById("headerImage").files[0];
+                                                       var footerImage = document.getElementById("footerImage").files[0];
+
+                                                       // Create FormData and append the data
+                                                       var r = new FormData();
+                                                       r.append("title", emailtitle);
+                                                       r.append("des", emailDescription);
+                                                       r.append("email", email);
+                                                       if (headerImage) {
+                                                            r.append("himage", headerImage);
+                                                       }
+                                                       if (footerImage) {
+                                                            r.append("fimage", footerImage);
+                                                       }
+
+                                                       // Create an XMLHttpRequest and send data to customemailsend.php
+                                                       var req = new XMLHttpRequest();
+                                                       req.open("POST", "customemailsend.php", true);
+
+                                                       // Optional: Add a handler to check the response
+                                                       req.onload = function() {
+                                                            if (req.status === 200) {
+                                                                 alert("Email data sent successfully: " + req.responseText);
+                                                            } else {
+                                                                 alert("Error sending email data: " + req.statusText);
+                                                            }
+                                                       };
+
+                                                       // Send the form data
+                                                       req.send(r);
+                                                  }
+                                             </script>
+
+                                             <script src="https://cdn.ckeditor.com/ckeditor5/37.1.0/classic/ckeditor.js"></script>
+
+
 
                                              <!-- Bootstrap Modal -->
                                              <div class="modal fade" id="emailTemplateModal" tabindex="-1" aria-labelledby="emailTemplateModalLabel" aria-hidden="true">
